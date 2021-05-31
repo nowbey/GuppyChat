@@ -83,11 +83,10 @@ void FenClient::donneesRecues()
     if (socket->bytesAvailable() < tailleMessage)
         return;
 
-    // Si on arrive jusqu'à cette ligne, on peut récupérer le message entier
-    QString messageRecu;
-    in >> messageRecu;
+    Message *nouveauMessageRecu = new Message();
+    nouveauMessageRecu->deserialize(in);
 
-    listeMessages->append(messageRecu); // On affiche le message sur la zone de Chat
+    listeMessages->append(nouveauMessageRecu->GetMessage()); // On affiche le message sur la zone de Chat
 
     tailleMessage = 0; // On remet la taille du message à 0 pour pouvoir recevoir de futurs messages
 }

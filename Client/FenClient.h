@@ -4,7 +4,7 @@
 #include <QtWidgets>
 #include <QtNetwork>
 #include "ui_FenClient.h"
-#include "message.h"
+#include "../GC_common/message.h"
 
 
 class FenClient : public QWidget, private Ui::FenClient

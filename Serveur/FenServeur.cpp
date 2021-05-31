@@ -46,7 +46,9 @@ void FenServeur::nouvelleConnexion()
 
     // Actualisation des affichages pour indiquer qu'un nouveau client est dispo
     etatServeur->setText(tr("Le serveur a été démarré sur le port <strong>") + QString::number(serveur->serverPort()) + tr("</strong>.<br />Des clients peuvent maintenant se connecter. ") + tr("<br />Actuellement: ") + QString::number(clients.size()));
-    envoyerATous(tr("<em>Un nouveau client vient de se connecter</em>"));
+
+    Message newClientMessage("Server", "Client", tr("<em>Un client vient de se déconnecter</em>"), "SENDMESSAGE");
+    envoyerATous(newClientMessage);
 
     // Connection des signaux du client aux slots du serveur
     connect(nouveauClient, &Client::messageRecu, this, &FenServeur::messageRecuFromClient);
@@ -56,22 +58,22 @@ void FenServeur::nouvelleConnexion()
 //-----------------------------------
 //  Message reçu d'un client
 //-----------------------------------
-void FenServeur::messageRecuFromClient(Message* message){
-    envoyerATous(message->GetMessage());
+void FenServeur::messageRecuFromClient(const Message& message)const {
+    envoyerATous(message);
 }
 
 
 //-----------------------------------
 //  Un client s'est déconnecté
 //-----------------------------------
-void FenServeur::deconnexionClient(Client *client)
-{
+void FenServeur::deconnexionClient(Client *client){
     // On retire le client de la liste des clients
     clients.removeOne(client);
     delete client; // appele le destructeur de client
 
-    // Actualisation des affichages pour indiquer qu'un client est parti
-    envoyerATous(tr("<em>Un client vient de se déconnecter</em>"));
+    Message decoMessage("Server", "Client", tr("<em>Un client vient de se déconnecter</em>"), "SENDMESSAGE");
+    envoyerATous(decoMessage);
+
     etatServeur->setText(tr("Le serveur a été démarré sur le port <strong>") + QString::number(serveur->serverPort()) + tr("</strong>.<br />Des clients peuvent maintenant se connecter. ") + tr("<br />Actuellement: ") + QString::number(clients.size()));
 }
 
@@ -81,8 +83,7 @@ void FenServeur::deconnexionClient(Client *client)
 //-----------------------------------
 //  Envoyer un message à tous les clients
 //-----------------------------------
-void FenServeur::envoyerATous(const QString &message)
-{
+void FenServeur::envoyerATous(const Message& message) const{
     // Envoi du paquet préparé à tous les clients connectés au serveur
     for (int i = 0; i < clients.size(); i++)
     {

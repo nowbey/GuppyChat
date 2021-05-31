@@ -56,7 +56,7 @@ void Client::donneesRecues()
     // Si le client est autorisé
     if (this->allowed == true){
         if (nouveauMessage->GetMessageType()  == "SENDMESSAGE"){
-            emit messageRecu(nouveauMessage);
+            emit messageRecu(*nouveauMessage);
         }
     }else{
         if (nouveauMessage->GetMessageType()  == "SENDALLOWREQUEST"){
@@ -92,20 +92,20 @@ void Client::deconnexionClient()
 //---------------------------------------
 //  Le client à reçu un message
 //---------------------------------------
-void Client::envoyerMessage(const QString &message)
+void Client::envoyerMessage(const Message& message)
 {
     // Préparation du paquet
-    QByteArray paquet;
-    QDataStream out(&paquet, QIODevice::WriteOnly);
+    QByteArray buffer;
+    QDataStream stream(&buffer, QIODevice::ReadWrite);
 
-    out << (quint16) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
-    out << message; // On ajoute le message à la suite
-    out.device()->seek(0); // On se replace au début du paquet
-    out << (quint16) (paquet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
+    stream << (quint16) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
+    message.serialize(stream); // On ajoute le message à la suite
+    stream.device()->seek(0); // On se replace au début du paquet
+    stream << (quint16) (buffer.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
 
 
     // Envoi du paquet préparé à tous les clients connectés au serveur
-    this->Socket->write(paquet);
+    this->Socket->write(buffer);
 
 }
 

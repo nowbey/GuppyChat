@@ -19,12 +19,12 @@ class FenServeur : public QWidget
         QTcpServer *serveur;
         QList<Client *> clients;
     private:
-        void envoyerATous(const QString &message);
+        void envoyerATous(const Message& message) const;
 
     private slots:
         void nouvelleConnexion();
         void deconnexionClient(Client *client);
-        void messageRecuFromClient(Message* message);
+        void messageRecuFromClient(const Message& message) const;
 };
 
 #endif

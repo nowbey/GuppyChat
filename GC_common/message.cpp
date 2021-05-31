@@ -42,7 +42,7 @@ void Message::SetMessageType(QString messageType){
 }
 
 
-QDataStream& Message::serialize(QDataStream& out){
+QDataStream& Message::serialize(QDataStream& out) const {
     out << sourceName;
     out << destinataireName;
     out << message;

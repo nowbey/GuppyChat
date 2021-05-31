@@ -28,7 +28,7 @@ class Message
         void SetMessage(QString message);
         void SetMessageType(QString messageType);
 
-        QDataStream& serialize(QDataStream& out);
+        QDataStream& serialize(QDataStream& out) const;
         QDataStream& deserialize(QDataStream& inStream);
 
 };

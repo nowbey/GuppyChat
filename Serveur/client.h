@@ -2,7 +2,7 @@
 #define CLIENT_H
 
 #include <QtNetwork>
-#include "message.h"
+#include "../GC_common/message.h"
 
 class Client: public QObject
 {  
@@ -19,7 +19,7 @@ class Client: public QObject
         bool allowed;
 
     public:
-        void envoyerMessage(const QString &message);
+        void envoyerMessage(const Message& message);
 
     private slots:
         void donneesRecues();
@@ -27,7 +27,7 @@ class Client: public QObject
 
     signals:
         void clientDeconnecte(Client* ceClient);
-        void messageRecu(Message* message);
+        void messageRecu(const Message& message);
 
 };
 
