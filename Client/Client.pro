@@ -5,12 +5,10 @@ INCLUDEPATH += .
 
 # Input
 HEADERS += \
-    FenClient.h \
-    message.h
+    FenClient.h
 
 SOURCES += main.cpp \
-    FenClient.cpp \
-    message.cpp
+    FenClient.cpp
 
 
 FORMS += \
