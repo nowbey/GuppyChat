@@ -49,13 +49,16 @@ void Client::donneesRecues()
         return;
 
     // Si ces lignes s'exécutent, c'est qu'on a reçu tout le message : on peut le récupérer !
+
     Message *nouveauMessage = new Message();
     nouveauMessage->deserialize(in);
 
+    qDebug()  << "message received from client with type:" << nouveauMessage->GetMessageType();
     /* En fonction du type de message: SENDMESSAGE ou SENDALLOWREQUEST */
     // Si le client est autorisé
     if (this->allowed == true){
         if (nouveauMessage->GetMessageType()  == "SENDMESSAGE"){
+            qDebug()  << "sending it to clients: "   << nouveauMessage->GetMessage();
             emit messageRecu(*nouveauMessage);
         }
     }else{

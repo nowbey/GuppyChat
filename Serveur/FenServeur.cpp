@@ -47,7 +47,7 @@ void FenServeur::nouvelleConnexion()
     // Actualisation des affichages pour indiquer qu'un nouveau client est dispo
     etatServeur->setText(tr("Le serveur a été démarré sur le port <strong>") + QString::number(serveur->serverPort()) + tr("</strong>.<br />Des clients peuvent maintenant se connecter. ") + tr("<br />Actuellement: ") + QString::number(clients.size()));
 
-    Message newClientMessage("Server", "Client", tr("<em>Un client vient de se déconnecter</em>"), "SENDMESSAGE");
+    Message newClientMessage("Server", "Client", tr("<em>New client connected</em>"), "SENDMESSAGE");
     envoyerATous(newClientMessage);
 
     // Connection des signaux du client aux slots du serveur

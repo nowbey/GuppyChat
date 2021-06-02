@@ -2,6 +2,7 @@
 #define CLIENT_H
 
 #include <QtNetwork>
+#include <QDebug>
 #include "../GC_common/message.h"
 
 class Client: public QObject
@@ -14,7 +15,7 @@ class Client: public QObject
 
     private:
         QString name;
-        QTcpSocket *Socket;
+        QTcpSocket* Socket;
         quint16 TailleMessage;
         bool allowed;
 

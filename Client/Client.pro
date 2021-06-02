@@ -1,18 +1,23 @@
 TEMPLATE = app
-QT += widgets network
+QT += \
+    widgets \
+    network
 DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
 HEADERS += \
-    FenClient.h
+    ClientChat.h \
+    ClientConnection.h
 
 SOURCES += main.cpp \
-    FenClient.cpp
+    ClientChat.cpp \
+    ClientConnection.cpp
 
 
 FORMS += \
-    FenClient.ui
+    ClientChat.ui \
+    ClientConnection.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../GC_common/build-GC_common-Desktop-Debug/release/ -lGC_common
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../GC_common/build-GC_common-Desktop-Debug/debug/ -lGC_common

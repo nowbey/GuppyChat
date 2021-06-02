@@ -1,12 +1,12 @@
 #include <QApplication>
-#include "FenClient.h"
+#include "ClientConnection.h"
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    FenClient fenetre;
-    fenetre.show();
+    ClientConnection Connectionfenetre;
+    Connectionfenetre.show();
 
     return app.exec();
 }
