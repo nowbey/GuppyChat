@@ -31,3 +31,6 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../GC_commo
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../GC_common/build-GC_common-Desktop-Debug/release/GC_common.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../GC_common/build-GC_common-Desktop-Debug/debug/GC_common.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../GC_common/build-GC_common-Desktop-Debug/libGC_common.a
+
+RESOURCES += \
+    Images.qrc

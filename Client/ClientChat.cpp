@@ -1,4 +1,9 @@
 #include "ClientChat.h"
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QScrollArea>
+#include <QLabel>
+
 
 /*--------------------------------  ClientChat constructor  --------------------------------------
  *
@@ -16,6 +21,17 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
     this->socket = socket;
     this->userName = userName;
     this->messageSize = 0;
+
+    // Remove the ugly white bar on tabWidget !!!
+    tabWidget->tabBar()->setDrawBase(false);
+
+
+    for (int i = 0; i < 7 ; i++)
+    {
+       ListOfUsersWidget->addItem("totowwwwwwwwwwwwwwwwwwwwwwwwwwwww" + QString::number(i));
+    }
+
+
     // Connect all usefull socket signals to the ClientChat slots
     connect(socket, &QTcpSocket::readyRead, this, &ClientChat::dataReceived);
     connect(socket, &QTcpSocket::disconnected, this, &ClientChat::disconnect);
@@ -61,9 +77,9 @@ void ClientChat::on_message_returnPressed(){
  *  This slot is called on disconnectButton clicked
  *  It stops the current socket
  *-----------------------------------------------------------------------------------------------*/
-void ClientChat::on_disconnectButton_clicked(){
+/*void ClientChat::on_disconnectButton_clicked(){
     this->socket->abort();
-}
+}*/
 
 
 

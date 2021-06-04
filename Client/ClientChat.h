@@ -45,7 +45,7 @@ private slots:
      *  This slot is called on disconnectButton clicked
      *  It stops the current socket
      *-----------------------------------------------------------------------------------------------*/
-    void on_disconnectButton_clicked();
+    //void on_disconnectButton_clicked();
 
     /*----------------------------  ClientChat::dataReceived slot  -----------------------------------
      *  This slot is called on data recived form the server

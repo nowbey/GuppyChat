@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/background2.jpg</file>
+        <file>img/GuppyChat_espace2.png</file>
+    </qresource>
+</RCC>

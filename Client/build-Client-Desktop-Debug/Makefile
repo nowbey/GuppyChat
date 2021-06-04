@@ -54,11 +54,13 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../main.cpp \
 		../ClientChat.cpp \
-		../ClientConnection.cpp moc_ClientChat.cpp \
+		../ClientConnection.cpp qrc_Images.cpp \
+		moc_ClientChat.cpp \
 		moc_ClientConnection.cpp
 OBJECTS       = main.o \
 		ClientChat.o \
 		ClientConnection.o \
+		qrc_Images.o \
 		moc_ClientChat.o \
 		moc_ClientConnection.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -117,6 +119,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		../.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -207,6 +210,7 @@ Makefile: ../Client.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.co
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -226,7 +230,8 @@ Makefile: ../Client.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.co
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../Client.pro
+		../Client.pro \
+		../Images.qrc
 	$(QMAKE) -o Makefile ../Client.pro -qtconf /usr/lib/x86_64-linux-gnu/qt5/qt.conf -early QMAKE_CC=x86_64-linux-gnu-gcc QMAKE_CXX=x86_64-linux-gnu-g++ QMAKE_LINK=x86_64-linux-gnu-g++ QMAKE_STRIP=x86_64-linux-gnu-strip QMAKE_QMAKE=/usr/bin/x86_64-linux-gnu-qmake PKG_CONFIG=x86_64-linux-gnu-pkg-config -before -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf:
@@ -284,6 +289,7 @@ Makefile: ../Client.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.co
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -304,6 +310,7 @@ Makefile: ../Client.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.co
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 ../Client.pro:
+../Images.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../Client.pro -qtconf /usr/lib/x86_64-linux-gnu/qt5/qt.conf -early QMAKE_CC=x86_64-linux-gnu-gcc QMAKE_CXX=x86_64-linux-gnu-g++ QMAKE_LINK=x86_64-linux-gnu-g++ QMAKE_STRIP=x86_64-linux-gnu-strip QMAKE_QMAKE=/usr/bin/x86_64-linux-gnu-qmake PKG_CONFIG=x86_64-linux-gnu-pkg-config -before -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 
@@ -318,6 +325,7 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents ../Images.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../ClientChat.h ../ClientConnection.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../main.cpp ../ClientChat.cpp ../ClientConnection.cpp $(DISTDIR)/
@@ -345,8 +353,15 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_Images.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_Images.cpp
+qrc_Images.cpp: ../Images.qrc \
+		/usr/lib/qt5/bin/rcc \
+		../img/GuppyChat_espace2.png \
+		../img/background2.jpg
+	/usr/lib/qt5/bin/rcc -name Images ../Images.qrc -o qrc_Images.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
@@ -393,7 +408,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -415,6 +430,9 @@ ClientConnection.o: ../ClientConnection.cpp ../ClientConnection.h \
 		../ClientChat.h \
 		ui_ClientChat.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ClientConnection.o ../ClientConnection.cpp
+
+qrc_Images.o: qrc_Images.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_Images.o qrc_Images.cpp
 
 moc_ClientChat.o: moc_ClientChat.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ClientChat.o moc_ClientChat.cpp
