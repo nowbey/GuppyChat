@@ -20,16 +20,14 @@ SOURCES += \
     GuppyClientServerMessage.cpp \
     GuppySendCredentials.cpp \
     GuppyServerClientMessage.cpp \
-    GuppyUserValidation.cpp \
-    message.cpp
+    GuppyUserValidation.cpp
 
 HEADERS += \
     GuppyClientServerMessage.h \
     GuppySendCredentials.h \
     GuppyServerClientMessage.h \
     GuppyUserValidation.h \
-    IGuppyMessage.h \
-    message.h
+    IGuppyMessage.h
 
 # Default rules for deployment.
 unix {
