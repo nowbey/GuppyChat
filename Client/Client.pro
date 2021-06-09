@@ -14,10 +14,12 @@ SOURCES += main.cpp \
     ClientChat.cpp \
     ClientConnection.cpp
 
-
 FORMS += \
     ClientChat.ui \
     ClientConnection.ui
+
+RESOURCES += \
+    Images.qrc
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../GC_common/build-GC_common-Desktop-Debug/release/ -lGC_common
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../GC_common/build-GC_common-Desktop-Debug/debug/ -lGC_common
@@ -32,5 +34,4 @@ else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/..
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../GC_common/build-GC_common-Desktop-Debug/debug/GC_common.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../GC_common/build-GC_common-Desktop-Debug/libGC_common.a
 
-RESOURCES += \
-    Images.qrc
+

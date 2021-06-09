@@ -4,7 +4,10 @@
 #include <QtWidgets>
 #include <QtNetwork>
 #include "ui_ClientConnection.h"
-#include "../GC_common/message.h"
+
+#include "../GC_common/GuppySendCredentials.h"
+#include "../GC_common/GuppyUserValidation.h"
+
 #include "ClientChat.h"
 
 
@@ -27,8 +30,12 @@ public:
     ~ClientConnection();
 
 private:
-    QTcpSocket *socket;
     ClientChat *fenetreChat;
+
+    QTcpSocket *socket;
+
+    quint16 messageSize;
+    MessageType messageType;
 
 private slots:
     /*---------------------  ClientConnection::on_connectButton_clicked slot  ----------------------
@@ -43,6 +50,12 @@ private slots:
      *  it open the ClientChat
      *-----------------------------------------------------------------------------------------------*/
     void connected();
+
+    /*--------------------------  ClientConnection::dataReceived slot  -------------------------------
+     *  This slot is called on data recived form the server
+     *  it can be called several times until a message is completely received
+     *-----------------------------------------------------------------------------------------------*/
+    void dataReceived();
 
     /*--------------------------  ClientConnection::errorSocket slot  --------------------------------
      *  This slot is called if an error signal sent by the socket

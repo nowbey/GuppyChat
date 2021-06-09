@@ -21,6 +21,7 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
     this->socket = socket;
     this->userName = userName;
     this->messageSize = 0;
+    this->messageType = MessageType::GUPPYMESSAGEUNKNOWN;
 
     // Remove the ugly white bar on tabWidget !!!
     tabWidget->tabBar()->setDrawBase(false);
@@ -28,7 +29,7 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
 
     for (int i = 0; i < 7 ; i++)
     {
-       ListOfUsersWidget->addItem("totowwwwwwwwwwwwwwwwwwwwwwwwwwwww" + QString::number(i));
+       ListOfUsersWidget->addItem("toto" + QString::number(i));
     }
 
 
@@ -51,16 +52,14 @@ void ClientChat::on_sendButton_clicked(){
     QDataStream stream(&buffer, QIODevice::ReadWrite);
 
     // fill the Message with data
-    Message messageToSend;
-    messageToSend.SetMessage(tr("<strong>") + this->userName +tr("</strong> : ") + message->text());
-    messageToSend.SetSourceName(this->userName);
-    messageToSend.SetDestinataireName("tous");
+    GuppyClientServerMessage* messageToSend = new GuppyClientServerMessage(message->text(),"Public");
 
-    // fill the stream with the size and the Message
+    // fill the stream with the size, the object type and the serialized object
     stream << (quint16) 0;
-    messageToSend.serialize(stream);
+    stream << static_cast<quint8>(messageToSend->GetMessageType());
+    messageToSend->serialize(stream);
     stream.device()->seek(0);
-    stream << (quint16) (buffer.size() - sizeof(quint16));
+    stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
 
     // Send the buffer to the server
     socket->write(buffer);
@@ -96,20 +95,36 @@ void ClientChat::dataReceived(){
              return;
         in >> this->messageSize;
     }
+    if(this->messageType == MessageType::GUPPYMESSAGEUNKNOWN){
+        if (this->socket->bytesAvailable() < (int)sizeof(quint8))
+             return;
+        quint8 tmp;
+        in >> tmp;
+        this->messageType = static_cast<enum MessageType>(tmp);
+    }
+
+    qDebug() << "Chat Message from server socket->bytesAvailable()" << socket->bytesAvailable();
+    qDebug() << "Chat Message from server messageSize:" <<this->messageSize;
+    qDebug() << "Chat Message from server messageType:" << static_cast<quint8>(this->messageType);
 
     // If we still don't have the full message we are waiting for the next exchange
     if (this->socket->bytesAvailable() < this->messageSize)
         return;
 
     // All the message has been received, let's get the data !
-    Message *newMessageReceived = new Message();
-    newMessageReceived->deserialize(in);
+    if (this->messageType == MessageType::GUPPYSERVERCLIENTMESSAGE){
+        GuppyServerClientMessage *newMessageReceived = new GuppyServerClientMessage();
+        newMessageReceived->deserialize(in);
 
-    // Display the message in the public chat
-    publicMessageList->append(newMessageReceived->GetMessage());
+        // Todo: Do it in a function
+        publicMessageList->append(tr("<strong>") + newMessageReceived->GetSender() + tr("</strong> : ") + newMessageReceived->GetMessage());
 
+    }
+    QString str;
+    in >> str;
     // reset messageSize for the next messages
     this->messageSize = 0;
+    this->messageType = MessageType::GUPPYMESSAGEUNKNOWN;
 }
 
 /*------------------------------  ClientChat::disconnect slot  ----------------------------------

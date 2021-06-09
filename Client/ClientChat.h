@@ -7,6 +7,8 @@
 #include <QString>
 #include "ui_ClientChat.h"
 #include "../GC_common/message.h"
+#include "../GC_common/GuppyClientServerMessage.h"
+#include "../GC_common/GuppyServerClientMessage.h"
 
 
 class ClientChat : public QWidget, private Ui::ClientChat
@@ -29,8 +31,11 @@ public:
 
 private:
     QString userName;
+
     QTcpSocket* socket;
+
     quint16 messageSize;
+    MessageType messageType;
 
 
 private slots:

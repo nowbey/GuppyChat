@@ -278,7 +278,7 @@ public:
 
     void retranslateUi(QWidget *ClientChat)
     {
-        ClientChat->setWindowTitle(QApplication::translate("ClientChat", "GuppyChat - Public", nullptr));
+        ClientChat->setWindowTitle(QApplication::translate("ClientChat", "GuppyChat", nullptr));
         Logo->setText(QString());
         ListOfUsersLabel->setText(QApplication::translate("ClientChat", "List of Users", nullptr));
         label_4->setText(QApplication::translate("ClientChat", "Message :", nullptr));

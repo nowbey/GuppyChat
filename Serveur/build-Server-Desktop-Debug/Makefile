@@ -17,7 +17,7 @@ CXX           = x86_64-linux-gnu-g++
 DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../../Serveur -I. -I../../Serveur -I../../GC_common/build-GC_common-Desktop-Debug -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+INCPATH       = -I../../Serveur -I. -I../../Serveur -I../../GC_common/build-GC_common-Desktop-Debug -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -52,15 +52,15 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../FenServeur.cpp \
-		../main.cpp \
-		../client.cpp moc_FenServeur.cpp \
-		moc_client.cpp
-OBJECTS       = FenServeur.o \
-		main.o \
-		client.o \
-		moc_FenServeur.o \
-		moc_client.o
+SOURCES       = ../main.cpp \
+		../Client.cpp \
+		../ServerManagement.cpp moc_Client.cpp \
+		moc_ServerManagement.cpp
+OBJECTS       = main.o \
+		Client.o \
+		ServerManagement.o \
+		moc_Client.o \
+		moc_ServerManagement.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -137,10 +137,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../../Serveur.pro ../FenServeur.h \
-		../client.h ../FenServeur.cpp \
-		../main.cpp \
-		../client.cpp
+		../../Serveur.pro ../Client.h \
+		../ServerManagement.h ../main.cpp \
+		../Client.cpp \
+		../ServerManagement.cpp
 QMAKE_TARGET  = Serveur
 DESTDIR       = 
 TARGET        = Serveur
@@ -149,7 +149,7 @@ TARGET        = Serveur
 first: all
 ####### Build rules
 
-Serveur: /home/jeff/GuppyChat/Serveur/../GC_common/build-GC_common-Desktop-Debug/libGC_common.a $(OBJECTS)  
+Serveur: /home/jeff/GuppyChat/Serveur/../GC_common/build-GC_common-Desktop-Debug/libGC_common.a ui_ServerManagement.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../Serveur.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -322,8 +322,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../FenServeur.h ../client.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../FenServeur.cpp ../main.cpp ../client.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Client.h ../ServerManagement.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../main.cpp ../Client.cpp ../ServerManagement.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../ServerManagement.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -354,57 +355,85 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	x86_64-linux-gnu-g++ -pipe -g -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_FenServeur.cpp moc_client.cpp
+compiler_moc_header_make_all: moc_Client.cpp moc_ServerManagement.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_FenServeur.cpp moc_client.cpp
-moc_FenServeur.cpp: ../FenServeur.h \
-		../client.h \
-		../../GC_common/message.h \
+	-$(DEL_FILE) moc_Client.cpp moc_ServerManagement.cpp
+moc_Client.cpp: ../Client.h \
+		../../GC_common/GuppySendCredentials.h \
+		../../GC_common/IGuppyMessage.h \
+		../../GC_common/GuppyUserValidation.h \
+		../../GC_common/GuppyClientServerMessage.h \
+		../../GC_common/GuppyServerClientMessage.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Serveur/build-Server-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../FenServeur.h -o moc_FenServeur.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Serveur/build-Server-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../Client.h -o moc_Client.cpp
 
-moc_client.cpp: ../client.h \
-		../../GC_common/message.h \
+moc_ServerManagement.cpp: ../ServerManagement.h \
+		ui_ServerManagement.h \
+		../Client.h \
+		../../GC_common/GuppySendCredentials.h \
+		../../GC_common/IGuppyMessage.h \
+		../../GC_common/GuppyUserValidation.h \
+		../../GC_common/GuppyClientServerMessage.h \
+		../../GC_common/GuppyServerClientMessage.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Serveur/build-Server-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../client.h -o moc_client.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Serveur/build-Server-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../ServerManagement.h -o moc_ServerManagement.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all:
+compiler_uic_make_all: ui_ServerManagement.h
 compiler_uic_clean:
+	-$(DEL_FILE) ui_ServerManagement.h
+ui_ServerManagement.h: ../ServerManagement.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic ../ServerManagement.ui -o ui_ServerManagement.h
+
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
-FenServeur.o: ../FenServeur.cpp ../FenServeur.h \
-		../client.h \
-		../../GC_common/message.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o FenServeur.o ../FenServeur.cpp
-
-main.o: ../main.cpp ../FenServeur.h \
-		../client.h \
-		../../GC_common/message.h
+main.o: ../main.cpp ../ServerManagement.h \
+		ui_ServerManagement.h \
+		../Client.h \
+		../../GC_common/GuppySendCredentials.h \
+		../../GC_common/IGuppyMessage.h \
+		../../GC_common/GuppyUserValidation.h \
+		../../GC_common/GuppyClientServerMessage.h \
+		../../GC_common/GuppyServerClientMessage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
-client.o: ../client.cpp ../client.h \
-		../../GC_common/message.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o client.o ../client.cpp
+Client.o: ../Client.cpp ../Client.h \
+		../../GC_common/GuppySendCredentials.h \
+		../../GC_common/IGuppyMessage.h \
+		../../GC_common/GuppyUserValidation.h \
+		../../GC_common/GuppyClientServerMessage.h \
+		../../GC_common/GuppyServerClientMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Client.o ../Client.cpp
 
-moc_FenServeur.o: moc_FenServeur.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_FenServeur.o moc_FenServeur.cpp
+ServerManagement.o: ../ServerManagement.cpp ../ServerManagement.h \
+		ui_ServerManagement.h \
+		../Client.h \
+		../../GC_common/GuppySendCredentials.h \
+		../../GC_common/IGuppyMessage.h \
+		../../GC_common/GuppyUserValidation.h \
+		../../GC_common/GuppyClientServerMessage.h \
+		../../GC_common/GuppyServerClientMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ServerManagement.o ../ServerManagement.cpp
 
-moc_client.o: moc_client.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_client.o moc_client.cpp
+moc_Client.o: moc_Client.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Client.o moc_Client.cpp
+
+moc_ServerManagement.o: moc_ServerManagement.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ServerManagement.o moc_ServerManagement.cpp
 
 ####### Install
 

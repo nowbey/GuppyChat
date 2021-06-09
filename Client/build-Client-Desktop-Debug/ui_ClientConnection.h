@@ -43,7 +43,7 @@ public:
     {
         if (ClientConnection->objectName().isEmpty())
             ClientConnection->setObjectName(QString::fromUtf8("ClientConnection"));
-        ClientConnection->resize(325, 243);
+        ClientConnection->resize(315, 260);
         ClientConnection->setStyleSheet(QString::fromUtf8("#FEtoile{\n"
 "background:url(:/img/background2.jpg);\n"
 "}\n"
@@ -69,7 +69,7 @@ public:
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         Logo = new QLabel(FEtoile);
         Logo->setObjectName(QString::fromUtf8("Logo"));
-        Logo->setMinimumSize(QSize(120, 0));
+        Logo->setMinimumSize(QSize(120, 100));
         Logo->setAlignment(Qt::AlignBottom|Qt::AlignJustify);
 
         gridLayout_2->addWidget(Logo, 0, 0, 1, 1);
@@ -89,6 +89,7 @@ public:
 
         userName = new QLineEdit(FBlanc);
         userName->setObjectName(QString::fromUtf8("userName"));
+        userName->setMinimumSize(QSize(150, 0));
 
         formLayout->setWidget(0, QFormLayout::FieldRole, userName);
 
@@ -135,7 +136,7 @@ public:
 
     void retranslateUi(QWidget *ClientConnection)
     {
-        ClientConnection->setWindowTitle(QApplication::translate("ClientConnection", "Form", nullptr));
+        ClientConnection->setWindowTitle(QApplication::translate("ClientConnection", "GuppyChat", nullptr));
         Logo->setText(QString());
         label->setText(QApplication::translate("ClientConnection", "User name", nullptr));
         label_3->setText(QApplication::translate("ClientConnection", "User Password", nullptr));

@@ -1,11 +1,11 @@
 #include <QApplication>
-#include "FenServeur.h"
+#include "ServerManagement.h"
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    FenServeur fenetre;
+    ServerManagement fenetre;
     fenetre.show();
 
     return app.exec();

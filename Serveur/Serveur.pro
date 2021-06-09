@@ -4,10 +4,12 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += FenServeur.h \
-    client.h
-SOURCES += FenServeur.cpp main.cpp \
-    client.cpp
+HEADERS += \
+    Client.h \
+    ServerManagement.h
+SOURCES += main.cpp \
+    Client.cpp \
+    ServerManagement.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../GC_common/build-GC_common-Desktop-Debug/release/ -lGC_common
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../GC_common/build-GC_common-Desktop-Debug/debug/ -lGC_common
@@ -21,3 +23,6 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../GC_commo
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../GC_common/build-GC_common-Desktop-Debug/release/GC_common.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../GC_common/build-GC_common-Desktop-Debug/debug/GC_common.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../GC_common/build-GC_common-Desktop-Debug/libGC_common.a
+
+FORMS += \
+    ServerManagement.ui

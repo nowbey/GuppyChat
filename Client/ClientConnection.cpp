@@ -12,15 +12,21 @@
 ClientConnection::ClientConnection(QWidget *parent) :  QWidget(parent){
     setupUi(this);
 
+    this->messageType = MessageType::GUPPYMESSAGEUNKNOWN;
+    this->messageSize = 0;
+
     socket = new QTcpSocket(this);
 
     connect(socket, &QTcpSocket::connected, this, &ClientConnection::connected);
+    connect(socket, &QTcpSocket::readyRead, this, &ClientConnection::dataReceived);
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(errorSocket(QAbstractSocket::SocketError)));
 }
 
 ClientConnection::~ClientConnection(){
     delete this;
 }
+
+
 
 
 /*---------------------  ClientConnection::on_connectButton_clicked slot  ----------------------
@@ -41,9 +47,62 @@ void ClientConnection::on_userName_returnPressed(){
  *  it open the ClientChat
  *-----------------------------------------------------------------------------------------------*/
 void ClientConnection::connected(){
-    this->hide();
-    fenetreChat = new ClientChat(socket,  userName->text());
-    fenetreChat->show();
+    QByteArray buffer;
+    QDataStream stream(&buffer, QIODevice::ReadWrite);
+
+    GuppySendCredentials *IdentificationMessage = new GuppySendCredentials(userName->text(),userPassword->text());
+
+    stream << (quint16) 0;
+    stream << static_cast<quint8>(IdentificationMessage->GetMessageType());
+    IdentificationMessage->serialize(stream);
+    stream.device()->seek(0);
+    stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
+
+    socket->write(buffer);
+
+}
+
+void ClientConnection::dataReceived(){
+    qDebug() << "Message from server";
+    QDataStream in(this->socket);
+
+    // If this is the first exchange of this communication, get the full message size
+    if (this->messageSize == 0){
+        if (this->socket->bytesAvailable() < (int)sizeof(quint16))
+             return;
+        in >> this->messageSize;
+    }
+    if(this->messageType == MessageType::GUPPYMESSAGEUNKNOWN){
+        if (this->socket->bytesAvailable() < (int)sizeof(quint8))
+             return;
+        quint8 tmp;
+        in >> tmp;
+        this->messageType = static_cast<enum MessageType>(tmp);
+    }
+
+    qDebug() << "Connection Message from server socket->bytesAvailable()" << socket->bytesAvailable();
+    qDebug() << "Connection Message from server messageSize:" <<this->messageSize;
+    qDebug() << "Connection Message from server messageType:" << static_cast<quint8>(this->messageType);
+
+    // If we still don't have the full message we are waiting for the next exchange
+    if (this->socket->bytesAvailable() < this->messageSize)
+        return;
+
+    // All the message has been received, let's get the data !
+    if (this->messageType == MessageType::GUPPYUSERVALIDATION){
+        GuppyUserValidation *newMessageReceived = new GuppyUserValidation();
+        newMessageReceived->deserialize(in);
+
+        if (newMessageReceived->GetGuppyUserValidationVar() == true){
+            fenetreChat = new ClientChat(socket,  userName->text());
+            disconnect(socket, &QTcpSocket::readyRead, this, &ClientConnection::dataReceived);
+            fenetreChat->show();
+            this->close();
+        }
+    }
+    // reset messageSize for the next messages
+    this->messageSize = 0;
+    this->messageType = MessageType::GUPPYMESSAGEUNKNOWN;
 }
 
 
@@ -66,3 +125,6 @@ void ClientConnection::errorSocket(QAbstractSocket::SocketError error){
             QMessageBox::critical(this, "ERROR", socket->errorString());
     }
 }
+
+
+
