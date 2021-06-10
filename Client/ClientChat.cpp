@@ -43,6 +43,10 @@ ClientChat::~ClientChat(){
 
 void ClientChat::UpdaterListOfUsersConnected(QList<QString> ListOfUsersConnected){
     ListOfUsersWidget->clear();
+    // Remove this client from the list
+    ListOfUsersConnected.removeOne(this->userName);
+
+    // Update the display
     ListOfUsersWidget->addItems(ListOfUsersConnected);
 }
 
