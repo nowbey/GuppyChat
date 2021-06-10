@@ -12,7 +12,6 @@
 
 
 class ClientConnection : public QWidget, private Ui::ClientConnection
-        //class FenClient : public QWidget, private Ui::FenClient
 {
     Q_OBJECT
 

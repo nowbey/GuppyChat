@@ -54,8 +54,10 @@ void ClientChat::DisplayMessage(const GuppyServerClientMessage& message){
     qDebug()<< "Message reçu à afficher dans l'onglet:" << message.GetRecipient();
     for(int i=0; i< tabWidget->count();i++){
         qDebug()<< "Onglet dispo:" << tabWidget->tabText(i);
-        QString MessageToDisplay = "<strong>" + message.GetSender() + ": </strong>" + message.GetMessage();
-        dynamic_cast<ClientTabChat*>(tabWidget->widget(i))->WriteMessage(MessageToDisplay);
+        if (message.GetRecipient() == tabWidget->tabText(i)){
+            QString MessageToDisplay = "<strong>" + message.GetSender() + ": </strong>" + message.GetMessage();
+            dynamic_cast<ClientTabChat*>(tabWidget->widget(i))->WriteMessage(MessageToDisplay);
+        }
 
     }
 }
@@ -63,6 +65,23 @@ void ClientChat::DisplayMessage(const GuppyServerClientMessage& message){
 
 
 
+
+void ClientChat::on_ListOfUsersWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    bool TabAlreadyExists = false;
+    for(int i=0; i< tabWidget->count();i++){
+        if (tabWidget->tabText(i) == item->text()) TabAlreadyExists= true;
+    }
+
+    if (TabAlreadyExists){
+        tabWidget->setFocus();
+    }
+    else{
+        ClientTabChat *PublicTabChat = new ClientTabChat(item->text());
+        tabWidget->addTab(PublicTabChat,item->text());
+        tabWidget->setFocus();
+    }
+}
 
 /*---------------------  ClientChat::on_disconnectButton_clicked slot  ---------------------------
  *  This slot is called on disconnectButton clicked

@@ -52,6 +52,7 @@ private:
 
 
 private slots:
+    void on_ListOfUsersWidget_itemDoubleClicked(QListWidgetItem *item);
 
     void SendMessageToServer(const GuppyClientServerMessage& message);
 
@@ -66,8 +67,6 @@ private slots:
      *  it close the chat UI and back to connection window (Todo)
      *-----------------------------------------------------------------------------------------------*/
     void disconnect();
-
-
 };
 
 #endif // CLIENTCHAT_H

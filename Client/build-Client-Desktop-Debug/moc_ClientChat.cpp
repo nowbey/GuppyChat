@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ClientChat_t {
-    QByteArrayData data[7];
-    char stringdata0[89];
+    QByteArrayData data[10];
+    char stringdata0[150];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,15 +32,19 @@ struct qt_meta_stringdata_ClientChat_t {
 static const qt_meta_stringdata_ClientChat_t qt_meta_stringdata_ClientChat = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "ClientChat"
-QT_MOC_LITERAL(1, 11, 19), // "SendMessageToServer"
-QT_MOC_LITERAL(2, 31, 0), // ""
-QT_MOC_LITERAL(3, 32, 24), // "GuppyClientServerMessage"
-QT_MOC_LITERAL(4, 57, 7), // "message"
-QT_MOC_LITERAL(5, 65, 12), // "dataReceived"
-QT_MOC_LITERAL(6, 78, 10) // "disconnect"
+QT_MOC_LITERAL(1, 11, 38), // "on_ListOfUsersWidget_itemDoub..."
+QT_MOC_LITERAL(2, 50, 0), // ""
+QT_MOC_LITERAL(3, 51, 16), // "QListWidgetItem*"
+QT_MOC_LITERAL(4, 68, 4), // "item"
+QT_MOC_LITERAL(5, 73, 19), // "SendMessageToServer"
+QT_MOC_LITERAL(6, 93, 24), // "GuppyClientServerMessage"
+QT_MOC_LITERAL(7, 118, 7), // "message"
+QT_MOC_LITERAL(8, 126, 12), // "dataReceived"
+QT_MOC_LITERAL(9, 139, 10) // "disconnect"
 
     },
-    "ClientChat\0SendMessageToServer\0\0"
+    "ClientChat\0on_ListOfUsersWidget_itemDoubleClicked\0"
+    "\0QListWidgetItem*\0item\0SendMessageToServer\0"
     "GuppyClientServerMessage\0message\0"
     "dataReceived\0disconnect"
 };
@@ -52,7 +56,7 @@ static const uint qt_meta_data_ClientChat[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -60,12 +64,14 @@ static const uint qt_meta_data_ClientChat[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   29,    2, 0x08 /* Private */,
-       5,    0,   32,    2, 0x08 /* Private */,
-       6,    0,   33,    2, 0x08 /* Private */,
+       1,    1,   34,    2, 0x08 /* Private */,
+       5,    1,   37,    2, 0x08 /* Private */,
+       8,    0,   40,    2, 0x08 /* Private */,
+       9,    0,   41,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
+    QMetaType::Void, 0x80000000 | 6,    7,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -78,9 +84,10 @@ void ClientChat::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         auto *_t = static_cast<ClientChat *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->SendMessageToServer((*reinterpret_cast< const GuppyClientServerMessage(*)>(_a[1]))); break;
-        case 1: _t->dataReceived(); break;
-        case 2: _t->disconnect(); break;
+        case 0: _t->on_ListOfUsersWidget_itemDoubleClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 1: _t->SendMessageToServer((*reinterpret_cast< const GuppyClientServerMessage(*)>(_a[1]))); break;
+        case 2: _t->dataReceived(); break;
+        case 3: _t->disconnect(); break;
         default: ;
         }
     }
@@ -115,13 +122,13 @@ int ClientChat::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 4)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }
