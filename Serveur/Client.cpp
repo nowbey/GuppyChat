@@ -82,7 +82,7 @@ void Client::DataReceived()
         GuppyClientServerMessage* newMessageReceived = new GuppyClientServerMessage();
         newMessageReceived->deserialize(in);
 
-        GuppyServerClientMessage* newMessageToSend = new GuppyServerClientMessage(newMessageReceived->GetMessage(),this->clientName,"All");
+        GuppyServerClientMessage* newMessageToSend = new GuppyServerClientMessage(newMessageReceived->GetMessage(),this->clientName,"Public");
         emit MessageToBeDelivered(*newMessageToSend);
     }
 

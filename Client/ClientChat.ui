@@ -271,7 +271,7 @@ QTabBar::tab {
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>-1</number>
         </property>
         <property name="elideMode">
          <enum>Qt::ElideLeft</enum>
@@ -285,53 +285,6 @@ QTabBar::tab {
         <property name="movable">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="Tab">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="font">
-          <font>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <attribute name="title">
-          <string>Public</string>
-         </attribute>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="1" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>Message :</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="message"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="sendButton">
-              <property name="text">
-               <string>Send</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>chat.png</normaloff>chat.png</iconset>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="0">
-           <widget class="QTextEdit" name="publicMessageList">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
        </widget>
       </item>
      </layout>

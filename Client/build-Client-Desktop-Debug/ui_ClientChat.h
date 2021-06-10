@@ -14,13 +14,9 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QTabWidget>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -37,13 +33,6 @@ public:
     QLabel *ListOfUsersLabel;
     QListWidget *ListOfUsersWidget;
     QTabWidget *tabWidget;
-    QWidget *Tab;
-    QGridLayout *gridLayout;
-    QHBoxLayout *horizontalLayout_2;
-    QLabel *label_4;
-    QLineEdit *message;
-    QPushButton *sendButton;
-    QTextEdit *publicMessageList;
 
     void setupUi(QWidget *ClientChat)
     {
@@ -217,42 +206,6 @@ public:
         tabWidget->setDocumentMode(true);
         tabWidget->setTabsClosable(false);
         tabWidget->setMovable(true);
-        Tab = new QWidget();
-        Tab->setObjectName(QString::fromUtf8("Tab"));
-        Tab->setEnabled(true);
-        QFont font;
-        font.setStrikeOut(false);
-        Tab->setFont(font);
-        gridLayout = new QGridLayout(Tab);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        label_4 = new QLabel(Tab);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-
-        horizontalLayout_2->addWidget(label_4);
-
-        message = new QLineEdit(Tab);
-        message->setObjectName(QString::fromUtf8("message"));
-
-        horizontalLayout_2->addWidget(message);
-
-        sendButton = new QPushButton(Tab);
-        sendButton->setObjectName(QString::fromUtf8("sendButton"));
-        sendButton->setIcon(icon);
-
-        horizontalLayout_2->addWidget(sendButton);
-
-
-        gridLayout->addLayout(horizontalLayout_2, 1, 0, 1, 1);
-
-        publicMessageList = new QTextEdit(Tab);
-        publicMessageList->setObjectName(QString::fromUtf8("publicMessageList"));
-        publicMessageList->setReadOnly(true);
-
-        gridLayout->addWidget(publicMessageList, 0, 0, 1, 1);
-
-        tabWidget->addTab(Tab, QString());
 
         gridLayout_2->addWidget(tabWidget, 0, 1, 1, 1);
 
@@ -263,7 +216,7 @@ public:
         retranslateUi(ClientChat);
 
         ListOfUsersWidget->setCurrentRow(-1);
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(-1);
 
 
         QMetaObject::connectSlotsByName(ClientChat);
@@ -274,9 +227,6 @@ public:
         ClientChat->setWindowTitle(QApplication::translate("ClientChat", "GuppyChat", nullptr));
         Logo->setText(QString());
         ListOfUsersLabel->setText(QApplication::translate("ClientChat", "List of Users", nullptr));
-        label_4->setText(QApplication::translate("ClientChat", "Message :", nullptr));
-        sendButton->setText(QApplication::translate("ClientChat", "Send", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Tab), QApplication::translate("ClientChat", "Public", nullptr));
     } // retranslateUi
 
 };

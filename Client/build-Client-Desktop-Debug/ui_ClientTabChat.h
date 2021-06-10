@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -22,82 +23,95 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_ClientTabChat
+class Ui_ChatTab
 {
 public:
+    QGridLayout *gridLayout_2;
+    QFrame *ChatTab_frame;
     QGridLayout *gridLayout;
-    QTextEdit *publicMessageList_2;
-    QHBoxLayout *horizontalLayout_ChatTab;
-    QLabel *labelMessage_ChatTab;
-    QLineEdit *message_ChatTab;
-    QPushButton *sendButton__ChatTab;
+    QTextEdit *ChatTab_textChat;
+    QHBoxLayout *ChatTab_horizontalLayout;
+    QLabel *ChatTab_labelMessage;
+    QLineEdit *ChatTab_message;
+    QPushButton *ChatTab_sendButton;
 
-    void setupUi(QWidget *ClientTabChat)
+    void setupUi(QWidget *ChatTab)
     {
-        if (ClientTabChat->objectName().isEmpty())
-            ClientTabChat->setObjectName(QString::fromUtf8("ClientTabChat"));
-        ClientTabChat->resize(725, 455);
-        ClientTabChat->setStyleSheet(QString::fromUtf8("#ClientTabChat{\n"
+        if (ChatTab->objectName().isEmpty())
+            ChatTab->setObjectName(QString::fromUtf8("ChatTab"));
+        ChatTab->resize(725, 455);
+        ChatTab->setStyleSheet(QString::fromUtf8("\n"
+"#ChatTab_frame{\n"
 "	border-left: 1px solid #FF17365D;\n"
 "	border-right: 1px solid #FF17365D;\n"
 "	border-bottom: 1px solid #FF17365D;\n"
 "\n"
 "	border-bottom-right-radius:  15px;\n"
 "	border-bottom-left-radius:  15px;\n"
+"	border-top-right-radius:  15px;\n"
 "\n"
 "	top:15px;\n"
 "\n"
 "	background: rgba( 255, 255, 255, 80% );\n"
-"}\n"
-""));
-        gridLayout = new QGridLayout(ClientTabChat);
+"}"));
+        gridLayout_2 = new QGridLayout(ChatTab);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        gridLayout_2->setContentsMargins(0, 0, 0, 0);
+        ChatTab_frame = new QFrame(ChatTab);
+        ChatTab_frame->setObjectName(QString::fromUtf8("ChatTab_frame"));
+        ChatTab_frame->setFrameShape(QFrame::StyledPanel);
+        ChatTab_frame->setFrameShadow(QFrame::Raised);
+        gridLayout = new QGridLayout(ChatTab_frame);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        publicMessageList_2 = new QTextEdit(ClientTabChat);
-        publicMessageList_2->setObjectName(QString::fromUtf8("publicMessageList_2"));
-        publicMessageList_2->setReadOnly(true);
+        ChatTab_textChat = new QTextEdit(ChatTab_frame);
+        ChatTab_textChat->setObjectName(QString::fromUtf8("ChatTab_textChat"));
+        ChatTab_textChat->setReadOnly(true);
 
-        gridLayout->addWidget(publicMessageList_2, 0, 0, 1, 1);
+        gridLayout->addWidget(ChatTab_textChat, 0, 0, 1, 1);
 
-        horizontalLayout_ChatTab = new QHBoxLayout();
-        horizontalLayout_ChatTab->setObjectName(QString::fromUtf8("horizontalLayout_ChatTab"));
-        labelMessage_ChatTab = new QLabel(ClientTabChat);
-        labelMessage_ChatTab->setObjectName(QString::fromUtf8("labelMessage_ChatTab"));
+        ChatTab_horizontalLayout = new QHBoxLayout();
+        ChatTab_horizontalLayout->setObjectName(QString::fromUtf8("ChatTab_horizontalLayout"));
+        ChatTab_labelMessage = new QLabel(ChatTab_frame);
+        ChatTab_labelMessage->setObjectName(QString::fromUtf8("ChatTab_labelMessage"));
 
-        horizontalLayout_ChatTab->addWidget(labelMessage_ChatTab);
+        ChatTab_horizontalLayout->addWidget(ChatTab_labelMessage);
 
-        message_ChatTab = new QLineEdit(ClientTabChat);
-        message_ChatTab->setObjectName(QString::fromUtf8("message_ChatTab"));
+        ChatTab_message = new QLineEdit(ChatTab_frame);
+        ChatTab_message->setObjectName(QString::fromUtf8("ChatTab_message"));
 
-        horizontalLayout_ChatTab->addWidget(message_ChatTab);
+        ChatTab_horizontalLayout->addWidget(ChatTab_message);
 
-        sendButton__ChatTab = new QPushButton(ClientTabChat);
-        sendButton__ChatTab->setObjectName(QString::fromUtf8("sendButton__ChatTab"));
+        ChatTab_sendButton = new QPushButton(ChatTab_frame);
+        ChatTab_sendButton->setObjectName(QString::fromUtf8("ChatTab_sendButton"));
         QIcon icon;
         icon.addFile(QString::fromUtf8("chat.png"), QSize(), QIcon::Normal, QIcon::Off);
-        sendButton__ChatTab->setIcon(icon);
+        ChatTab_sendButton->setIcon(icon);
 
-        horizontalLayout_ChatTab->addWidget(sendButton__ChatTab);
-
-
-        gridLayout->addLayout(horizontalLayout_ChatTab, 1, 0, 1, 1);
+        ChatTab_horizontalLayout->addWidget(ChatTab_sendButton);
 
 
-        retranslateUi(ClientTabChat);
+        gridLayout->addLayout(ChatTab_horizontalLayout, 1, 0, 1, 1);
 
-        QMetaObject::connectSlotsByName(ClientTabChat);
+
+        gridLayout_2->addWidget(ChatTab_frame, 0, 0, 1, 1);
+
+
+        retranslateUi(ChatTab);
+
+        QMetaObject::connectSlotsByName(ChatTab);
     } // setupUi
 
-    void retranslateUi(QWidget *ClientTabChat)
+    void retranslateUi(QWidget *ChatTab)
     {
-        ClientTabChat->setWindowTitle(QApplication::translate("ClientTabChat", "Form", nullptr));
-        labelMessage_ChatTab->setText(QApplication::translate("ClientTabChat", "Message :", nullptr));
-        sendButton__ChatTab->setText(QApplication::translate("ClientTabChat", "Send", nullptr));
+        ChatTab->setWindowTitle(QApplication::translate("ChatTab", "Form", nullptr));
+        ChatTab_labelMessage->setText(QApplication::translate("ChatTab", "Message :", nullptr));
+        ChatTab_sendButton->setText(QApplication::translate("ChatTab", "Send", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class ClientTabChat: public Ui_ClientTabChat {};
+    class ChatTab: public Ui_ChatTab {};
 } // namespace Ui
 
 QT_END_NAMESPACE

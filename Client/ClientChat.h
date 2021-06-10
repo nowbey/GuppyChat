@@ -1,6 +1,7 @@
 #ifndef CLIENTCHAT_H
 #define CLIENTCHAT_H
 
+#include <QTableWidget>
 #include <QWidget>
 #include <QDialog>
 #include <QtNetwork>
@@ -47,21 +48,12 @@ private:
 
 private:
     void UpdaterListOfUsersConnected(QList<QString> ListOfUsersConnected);
+    void DisplayMessage(const GuppyServerClientMessage& message);
 
 
 private slots:
-    /*-------------------------  ClientChat::on_sendButton_clicked slot  ----------------------------
-     *  This slot is called on sendButton clicked
-     *  It use the socket to send an object "Message" to the server
-     *-----------------------------------------------------------------------------------------------*/
-    void on_sendButton_clicked();
-    void on_message_returnPressed(); // Pressing the Enter key has the same behavior as clicking the "Send" button.
 
-    /*---------------------  ClientChat::on_disconnectButton_clicked slot  ---------------------------
-     *  This slot is called on disconnectButton clicked
-     *  It stops the current socket
-     *-----------------------------------------------------------------------------------------------*/
-    //void on_disconnectButton_clicked();
+    void SendMessageToServer(const GuppyClientServerMessage& message);
 
     /*----------------------------  ClientChat::dataReceived slot  -----------------------------------
      *  This slot is called on data recived form the server

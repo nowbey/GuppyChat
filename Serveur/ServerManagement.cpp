@@ -62,9 +62,7 @@ void ServerManagement::ClientDisconnection(Client *client){
 
     // Update the list of connected users
     UpdateServerDisplayUserList();
-
     UpdateClientDisplayUserList();
-
 }
 
 /*-----------------------  ServerManagement ClientIdentified  -----------------------------
@@ -75,7 +73,7 @@ void ServerManagement::ClientDisconnection(Client *client){
 void ServerManagement::ClientIdentified(Client *client){
     ServerLog("New client - Credentials accepted for " + client->GetClientName());
 
-    GuppyServerClientMessage *NewClientConnection = new GuppyServerClientMessage("Welcome <strong>" + client->GetClientName() + "</strong> !", "Server", "All");
+    GuppyServerClientMessage *NewClientConnection = new GuppyServerClientMessage("Welcome <strong>" + client->GetClientName() + "</strong> !", "Server", "Public");
     MessageToBeDelivered(*NewClientConnection);
 
     UpdateServerDisplayUserList();
@@ -92,7 +90,7 @@ void ServerManagement::ClientIdentified(Client *client){
 void ServerManagement::MessageToBeDelivered(const GuppyServerClientMessage& message) const{
     ServerLog(message.GetMessage(),message.GetSender());
 
-    if(message.GetRecipient() == "All"){
+    if(message.GetRecipient() == "Public"){
         for (int i = 0; i < clients.size(); i++)
         {
            clients[i]->SendMessageToClient(message);

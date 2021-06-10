@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ClientTabChat</class>
- <widget class="QWidget" name="ClientTabChat">
+ <class>ChatTab</class>
+ <widget class="QWidget" name="ChatTab">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,52 +14,77 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#ClientTabChat{
+   <string notr="true">
+#ChatTab_frame{
 	border-left: 1px solid #FF17365D;
 	border-right: 1px solid #FF17365D;
 	border-bottom: 1px solid #FF17365D;
 
 	border-bottom-right-radius:  15px;
 	border-bottom-left-radius:  15px;
+	border-top-right-radius:  15px;
 
 	top:15px;
 
 	background: rgba( 255, 255, 255, 80% );
-}
-</string>
+}</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
-    <widget class="QTextEdit" name="publicMessageList_2">
-     <property name="readOnly">
-      <bool>true</bool>
+    <widget class="QFrame" name="ChatTab_frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
      </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QTextEdit" name="ChatTab_textChat">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="ChatTab_horizontalLayout">
+        <item>
+         <widget class="QLabel" name="ChatTab_labelMessage">
+          <property name="text">
+           <string>Message :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="ChatTab_message"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="ChatTab_sendButton">
+          <property name="text">
+           <string>Send</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>chat.png</normaloff>chat.png</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
-   </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_ChatTab">
-     <item>
-      <widget class="QLabel" name="labelMessage_ChatTab">
-       <property name="text">
-        <string>Message :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="message_ChatTab"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="sendButton__ChatTab">
-       <property name="text">
-        <string>Send</string>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>chat.png</normaloff>chat.png</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

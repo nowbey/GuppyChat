@@ -22,10 +22,12 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
     // Remove the ugly white bar on tabWidget !!!
     tabWidget->tabBar()->setDrawBase(false);
 
-    tabWidget->addTab(new ClientTabChat("Private", this),"Private");
+    ClientTabChat *PublicTabChat = new ClientTabChat("Public");
 
+    tabWidget->addTab(PublicTabChat,"Public");
 
     // Connect all usefull socket signals to the ClientChat slots
+    connect(PublicTabChat, &ClientTabChat::MessageToBeDelivered, this, &ClientChat::SendMessageToServer);
     connect(socket, &QTcpSocket::readyRead, this, &ClientChat::dataReceived);
     connect(socket, &QTcpSocket::disconnected, this, &ClientChat::disconnect);
 
@@ -48,44 +50,38 @@ void ClientChat::UpdaterListOfUsersConnected(QList<QString> ListOfUsersConnected
     ListOfUsersWidget->addItems(ListOfUsersConnected);
 }
 
+void ClientChat::DisplayMessage(const GuppyServerClientMessage& message){
+    qDebug()<< "Message reçu à afficher dans l'onglet:" << message.GetRecipient();
+    for(int i=0; i< tabWidget->count();i++){
+        qDebug()<< "Onglet dispo:" << tabWidget->tabText(i);
+        QString MessageToDisplay = "<strong>" + message.GetSender() + ": </strong>" + message.GetMessage();
+        dynamic_cast<ClientTabChat*>(tabWidget->widget(i))->WriteMessage(MessageToDisplay);
 
-
-/*-------------------------  ClientChat::on_sendButton_clicked slot  ----------------------------
- *  This slot is called on sendButton clicked
- *  It use the socket to send an object "Message" to the server
- *-----------------------------------------------------------------------------------------------*/
-void ClientChat::on_sendButton_clicked(){
-    QByteArray buffer;
-    QDataStream stream(&buffer, QIODevice::ReadWrite);
-
-    // fill the Message with data
-    GuppyClientServerMessage* messageToSend = new GuppyClientServerMessage(message->text(),"Public");
-
-    // fill the stream with the size, the object type and the serialized object
-    stream << (quint16) 0;
-    stream << static_cast<quint8>(messageToSend->GetMessageType());
-    messageToSend->serialize(stream);
-    stream.device()->seek(0);
-    stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
-
-    // Send the buffer to the server
-    socket->write(buffer);
-
-    message->clear(); // clear the message field
-    message->setFocus(); // set the focus message field
+    }
 }
-// Pressing the Enter key has the same behavior as clicking the "Send" button.
-void ClientChat::on_message_returnPressed(){
-    on_sendButton_clicked();
-}
+
+
+
+
 
 /*---------------------  ClientChat::on_disconnectButton_clicked slot  ---------------------------
  *  This slot is called on disconnectButton clicked
  *  It stops the current socket
  *-----------------------------------------------------------------------------------------------*/
-/*void ClientChat::on_disconnectButton_clicked(){
-    this->socket->abort();
-}*/
+void ClientChat::SendMessageToServer(const GuppyClientServerMessage& messageToSend){
+    QByteArray buffer;
+    QDataStream stream(&buffer, QIODevice::ReadWrite);
+
+    // fill the stream with the size, the object type and the serialized object
+    stream << (quint16) 0;
+    stream << static_cast<quint8>(messageToSend.GetMessageType());
+    messageToSend.serialize(stream);
+    stream.device()->seek(0);
+    stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
+
+    // Send the buffer to the server
+    socket->write(buffer);
+}
 
 
 
@@ -122,8 +118,10 @@ void ClientChat::dataReceived(){
             GuppyServerClientMessage *newMessageReceived = new GuppyServerClientMessage();
             newMessageReceived->deserialize(in);
 
+            DisplayMessage(*newMessageReceived);
+
             // Todo: Do it in a function
-            publicMessageList->append(tr("<strong>") + newMessageReceived->GetSender() + tr("</strong> : ") + newMessageReceived->GetMessage());
+            //publicMessageList->append(tr("<strong>") + newMessageReceived->GetSender() + tr("</strong> : ") + newMessageReceived->GetMessage());
 
         } else if (this->messageType == MessageType::GUPPYSENDUSERSLIST){
             GuppySendUserList *newMessageReceived = new GuppySendUserList();
