@@ -17,17 +17,11 @@ bool  GuppyUserValidation::GetGuppyUserValidationVar() const{
 
 
 QDataStream& GuppyUserValidation::serialize(QDataStream& out) const {
-    QString SerialGuppyUserValidationVar;
-    if (GuppyUserValidationVar == true) SerialGuppyUserValidationVar = "1";
-    else SerialGuppyUserValidationVar = "0";
-    out << SerialGuppyUserValidationVar;
+    out << this->GuppyUserValidationVar;
     return out;
 }
 
 QDataStream& GuppyUserValidation::deserialize(QDataStream& inStream){
-    QString SerialGuppyUserValidationVar;
-    inStream >> SerialGuppyUserValidationVar;
-    if (SerialGuppyUserValidationVar == "1") GuppyUserValidationVar = true;
-    else GuppyUserValidationVar = false;
+    inStream >> this->GuppyUserValidationVar;
     return inStream;
 }

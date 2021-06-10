@@ -19,12 +19,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     GuppyClientServerMessage.cpp \
     GuppySendCredentials.cpp \
+    GuppySendUserList.cpp \
     GuppyServerClientMessage.cpp \
     GuppyUserValidation.cpp
 
 HEADERS += \
     GuppyClientServerMessage.h \
     GuppySendCredentials.h \
+    GuppySendUserList.h \
     GuppyServerClientMessage.h \
     GuppyUserValidation.h \
     IGuppyMessage.h

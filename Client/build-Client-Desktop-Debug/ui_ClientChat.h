@@ -44,8 +44,6 @@ public:
     QLineEdit *message;
     QPushButton *sendButton;
     QTextEdit *publicMessageList;
-    QWidget *tab_3;
-    QWidget *tab_2;
 
     void setupUi(QWidget *ClientChat)
     {
@@ -82,6 +80,7 @@ public:
 "	background: rgba( 255, 255, 255, 80% );\n"
 "	padding-bottom:15px;\n"
 "	padding-left:15px;\n"
+"	padding-right:15px;\n"
 "}\n"
 "#ListOfUsersLabel {\n"
 "	border-left: 1px solid #FF17365D;\n"
@@ -100,8 +99,8 @@ public:
 "QTabBar::tab {\n"
 "	background: rgba( 255, 255, 255, 80% );\n"
 "	border-left: 1px solid #FF17365D;\n"
-"    border-right: 1px soli"
-                        "d #FF17365D;\n"
+" "
+                        "   border-right: 1px solid #FF17365D;\n"
 "    border-top: 1px solid #FF17365D;\n"
 "\n"
 "	border-bottom:0px;\n"
@@ -254,12 +253,6 @@ public:
         gridLayout->addWidget(publicMessageList, 0, 0, 1, 1);
 
         tabWidget->addTab(tab, QString());
-        tab_3 = new QWidget();
-        tab_3->setObjectName(QString::fromUtf8("tab_3"));
-        tabWidget->addTab(tab_3, QString());
-        tab_2 = new QWidget();
-        tab_2->setObjectName(QString::fromUtf8("tab_2"));
-        tabWidget->addTab(tab_2, QString());
 
         gridLayout_2->addWidget(tabWidget, 0, 1, 1, 1);
 
@@ -284,8 +277,6 @@ public:
         label_4->setText(QApplication::translate("ClientChat", "Message :", nullptr));
         sendButton->setText(QApplication::translate("ClientChat", "Send", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("ClientChat", "Public", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("ClientChat", "Page", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("ClientChat", "Page", nullptr));
     } // retranslateUi
 
 };

@@ -6,9 +6,10 @@
 #include <QtNetwork>
 #include <QString>
 #include "ui_ClientChat.h"
-#include "../GC_common/message.h"
+
 #include "../GC_common/GuppyClientServerMessage.h"
 #include "../GC_common/GuppyServerClientMessage.h"
+#include "../GC_common/GuppySendUserList.h"
 
 
 class ClientChat : public QWidget, private Ui::ClientChat
@@ -36,6 +37,9 @@ private:
 
     quint16 messageSize;
     MessageType messageType;
+
+private:
+    void UpdaterListOfUsersConnected(QList<QString> ListOfUsersConnected);
 
 
 private slots:

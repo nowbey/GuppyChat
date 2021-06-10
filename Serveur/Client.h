@@ -8,6 +8,7 @@
 #include "../GC_common/GuppyUserValidation.h"
 #include "../GC_common/GuppyClientServerMessage.h"
 #include "../GC_common/GuppyServerClientMessage.h"
+#include "../GC_common/GuppySendUserList.h"
 
 class Client: public QObject
 {  
@@ -27,6 +28,7 @@ class Client: public QObject
     public:
         const QString& GetClientName() const;
         void SendMessageToClient(const GuppyServerClientMessage& message);
+        void SendUserListToClient(const GuppySendUserList& userList);
 
     private:
         void sendUserValidation(bool UserValidationStatus);
@@ -37,7 +39,7 @@ class Client: public QObject
 
     signals:
         void ClientDisconnected(Client* thisClient);
-        void ClientIdentified(Client* thisClient);
+        void NewClientIdentified(Client* thisClient);
         void MessageToBeDelivered (const GuppyServerClientMessage& message);
 
 };

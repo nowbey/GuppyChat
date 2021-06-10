@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Client_t {
     QByteArrayData data[11];
-    char stringdata0[150];
+    char stringdata0[153];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,16 +36,16 @@ QT_MOC_LITERAL(1, 7, 18), // "ClientDisconnected"
 QT_MOC_LITERAL(2, 26, 0), // ""
 QT_MOC_LITERAL(3, 27, 7), // "Client*"
 QT_MOC_LITERAL(4, 35, 10), // "thisClient"
-QT_MOC_LITERAL(5, 46, 16), // "ClientIdentified"
-QT_MOC_LITERAL(6, 63, 20), // "MessageToBeDelivered"
-QT_MOC_LITERAL(7, 84, 24), // "GuppyServerClientMessage"
-QT_MOC_LITERAL(8, 109, 7), // "message"
-QT_MOC_LITERAL(9, 117, 12), // "DataReceived"
-QT_MOC_LITERAL(10, 130, 19) // "ClientDisconnection"
+QT_MOC_LITERAL(5, 46, 19), // "NewClientIdentified"
+QT_MOC_LITERAL(6, 66, 20), // "MessageToBeDelivered"
+QT_MOC_LITERAL(7, 87, 24), // "GuppyServerClientMessage"
+QT_MOC_LITERAL(8, 112, 7), // "message"
+QT_MOC_LITERAL(9, 120, 12), // "DataReceived"
+QT_MOC_LITERAL(10, 133, 19) // "ClientDisconnection"
 
     },
     "Client\0ClientDisconnected\0\0Client*\0"
-    "thisClient\0ClientIdentified\0"
+    "thisClient\0NewClientIdentified\0"
     "MessageToBeDelivered\0GuppyServerClientMessage\0"
     "message\0DataReceived\0ClientDisconnection"
 };
@@ -92,7 +92,7 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->ClientDisconnected((*reinterpret_cast< Client*(*)>(_a[1]))); break;
-        case 1: _t->ClientIdentified((*reinterpret_cast< Client*(*)>(_a[1]))); break;
+        case 1: _t->NewClientIdentified((*reinterpret_cast< Client*(*)>(_a[1]))); break;
         case 2: _t->MessageToBeDelivered((*reinterpret_cast< const GuppyServerClientMessage(*)>(_a[1]))); break;
         case 3: _t->DataReceived(); break;
         case 4: _t->ClientDisconnection(); break;
@@ -127,7 +127,7 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         }
         {
             using _t = void (Client::*)(Client * );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Client::ClientIdentified)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Client::NewClientIdentified)) {
                 *result = 1;
                 return;
             }
@@ -190,7 +190,7 @@ void Client::ClientDisconnected(Client * _t1)
 }
 
 // SIGNAL 1
-void Client::ClientIdentified(Client * _t1)
+void Client::NewClientIdentified(Client * _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);

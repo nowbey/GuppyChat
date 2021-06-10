@@ -61,9 +61,6 @@ void Client::DataReceived()
         return;
 
     // All the message has been received, let's get the data !
-    qDebug() << "Message from client messageSize:" <<this->messageSize;
-    qDebug() << "Message from client messageType:" << static_cast<quint8>(this->messageType);
-
     // If the client is still waiting for validation, we only expect him to send GUPPYSENDCREDENTAILS message
     if (this->UserValidation == false){
          if (this->messageType == MessageType::GUPPYSENDCREDENTAILS){
@@ -71,15 +68,13 @@ void Client::DataReceived()
              newMessageReceived->deserialize(in);
 
              // Check the user credentials
-             qDebug() << "user:" << newMessageReceived->GetGuppyUser();
-             qDebug() << "password:" << newMessageReceived->GetGuppyPassword();
 
              this->UserValidation = true;
              this->clientName = newMessageReceived->GetGuppyUser();
 
-             emit ClientIdentified(this);
-             qDebug() << "GUPPYSENDCREDENTAILS recieved lets send GUPPYUSERVALIDATION !" ;
+
              sendUserValidation(this->UserValidation);
+             emit NewClientIdentified(this);
          }
 
     // else, we only expect him to send GUPPYCLIENTSERVERMESSAGE message
@@ -89,7 +84,6 @@ void Client::DataReceived()
 
         GuppyServerClientMessage* newMessageToSend = new GuppyServerClientMessage(newMessageReceived->GetMessage(),this->clientName,"All");
         emit MessageToBeDelivered(*newMessageToSend);
-
     }
 
     // reset messageSize for the next messages
@@ -139,6 +133,25 @@ void Client::SendMessageToClient(const GuppyServerClientMessage& message)
     stream.device()->seek(0);
     stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
     qDebug() << "writing GuppyServerClientMessage for client buffer.size():" << buffer.size() << "Type:" << static_cast<quint8>(message.GetMessageType());
+
+    this->Socket->write(buffer);
+}
+
+/*-----------------------------  Client SendUserListToClientconst  -------------------------------
+ *  This slot is called to send a message to the client
+ *-----------------------------------------------------------------------------------------*/
+void Client::SendUserListToClient(const GuppySendUserList& UserList)
+{
+    QByteArray buffer;
+    QDataStream stream(&buffer, QIODevice::ReadWrite);
+
+    // fill the stream with the size, the object type and the serialized object
+    stream << (quint16) 0;
+    stream << static_cast<quint8>(UserList.GetMessageType());
+    UserList.serialize(stream);
+    stream.device()->seek(0);
+    stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
+    qDebug() << "Sending messageList to client:" << this->clientName;
 
     this->Socket->write(buffer);
 }

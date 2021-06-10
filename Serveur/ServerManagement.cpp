@@ -39,11 +39,11 @@ void ServerManagement::ClientConnection()
     Client *nouveauClient = new Client(server->nextPendingConnection());
     clients << nouveauClient;
 
-    ServerLog("New client - Waiting for credentials");
+    ServerLog("New client - Waiting for credentials for validation");
 
     connect(nouveauClient, &Client::MessageToBeDelivered, this, &ServerManagement::MessageToBeDelivered);
     connect(nouveauClient, &Client::ClientDisconnected, this, &ServerManagement::ClientDisconnection);
-    connect(nouveauClient, &Client::ClientIdentified, this, &ServerManagement::ClientIdentified);
+    connect(nouveauClient, &Client::NewClientIdentified, this, &ServerManagement::ClientIdentified);
 }
 
 /*-----------------------  ServerManagement deconnexionClient  -----------------------------
@@ -61,6 +61,7 @@ void ServerManagement::ClientDisconnection(Client *client){
     delete client;
 
     // Update the list of connected users
+    UpdateServerDisplayUserList();
 }
 
 /*-----------------------  ServerManagement ClientIdentified  -----------------------------
@@ -69,7 +70,16 @@ void ServerManagement::ClientDisconnection(Client *client){
  *  The Methode must delivery the message to the conserned clients
  *-----------------------------------------------------------------------------------------------*/
 void ServerManagement::ClientIdentified(Client *client){
-    ServerLog(" New client - Credentials accepted for " + client->GetClientName());
+    ServerLog("New client - Credentials accepted for " + client->GetClientName());
+
+    GuppyServerClientMessage *NewClientConnection = new GuppyServerClientMessage("Welcome <strong>" + client->GetClientName() + "</strong> !", "Server", "All");
+    MessageToBeDelivered(*NewClientConnection);
+
+    UpdateServerDisplayUserList();
+
+
+    UpdateClientDisplayUserList();
+
 }
 
 
@@ -79,14 +89,52 @@ void ServerManagement::ClientIdentified(Client *client){
  *  The Methode must delivery the message to the conserned clients
  *-----------------------------------------------------------------------------------------------*/
 void ServerManagement::MessageToBeDelivered(const GuppyServerClientMessage& message) const{
-    ServerLog("<strong>" + message.GetSender() + "</strong>: " + message.GetMessage());
+    ServerLog(message.GetMessage(),message.GetSender());
+
+    if(message.GetRecipient() == "All"){
+        for (int i = 0; i < clients.size(); i++)
+        {
+           clients[i]->SendMessageToClient(message);
+        }
+    }
+}
+
+void ServerManagement::UserListToBeDelivered(const GuppySendUserList& UserList) const{
     for (int i = 0; i < clients.size(); i++)
     {
-       clients[i]->SendMessageToClient(message);
+       clients[i]->SendUserListToClient(UserList);
     }
 }
 
 
 void ServerManagement::ServerLog(QString message) const{
-    ServerLogs->append(tr("<strong>Server logs:</strong>") + message );
+    ServerLogs->append(tr("<strong>Server logs: </strong>") + message );
+}
+
+void ServerManagement::ServerLog(QString message,QString sender) const{
+    ServerLogs->append("<strong>" + sender + ": </strong>" + message );
+}
+
+void ServerManagement::UpdateServerDisplayUserList() const{
+    //Create an exhaustive list of actually connected (& validated clients)
+    QList<QString> connectedClients ={};
+    for (int i=0; i< this->clients.size(); i++){
+        connectedClients.append(this->clients[i]->GetClientName());
+    }
+
+    // Replace the current display with the new client list
+    Userslist->clear();
+    Userslist->addItems(connectedClients);
+}
+
+void ServerManagement::UpdateClientDisplayUserList() const{
+    //Create an exhaustive list of actually connected (& validated clients)
+    QList<QString> connectedClients ={};
+    for (int i=0; i< this->clients.size(); i++){
+        connectedClients.append(this->clients[i]->GetClientName());
+    }
+
+    // Replace the current display with the new client list
+    GuppySendUserList *Userlistmessage = new GuppySendUserList(connectedClients);
+    UserListToBeDelivered(*Userlistmessage);
 }

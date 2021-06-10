@@ -31,9 +31,13 @@ private slots:
     void ClientIdentified(Client *client);
 
     void MessageToBeDelivered(const GuppyServerClientMessage& message) const;
+    void UserListToBeDelivered(const GuppySendUserList& UserList) const;
 
 private:
     void ServerLog(QString message) const;
+    void ServerLog(QString message,QString sender) const;
+    void UpdateServerDisplayUserList() const;
+    void UpdateClientDisplayUserList() const;
 
 private:
     QList<Client *> clients;

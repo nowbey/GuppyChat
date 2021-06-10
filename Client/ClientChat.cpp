@@ -27,20 +27,25 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
     tabWidget->tabBar()->setDrawBase(false);
 
 
-    for (int i = 0; i < 7 ; i++)
-    {
-       ListOfUsersWidget->addItem("toto" + QString::number(i));
-    }
-
-
     // Connect all usefull socket signals to the ClientChat slots
     connect(socket, &QTcpSocket::readyRead, this, &ClientChat::dataReceived);
     connect(socket, &QTcpSocket::disconnected, this, &ClientChat::disconnect);
+
+    // Call one time the socket reader is case of data has been recieved before the signal connection
+    dataReceived();
 }
 
 ClientChat::~ClientChat(){
     delete this;
 }
+
+
+
+void ClientChat::UpdaterListOfUsersConnected(QList<QString> ListOfUsersConnected){
+    ListOfUsersWidget->clear();
+    ListOfUsersWidget->addItems(ListOfUsersConnected);
+}
+
 
 
 /*-------------------------  ClientChat::on_sendButton_clicked slot  ----------------------------
@@ -87,44 +92,51 @@ void ClientChat::on_message_returnPressed(){
  *  it can be called several times until a message is completely received
  *-----------------------------------------------------------------------------------------------*/
 void ClientChat::dataReceived(){
-    QDataStream in(this->socket);
+    while (!this->socket->atEnd()) {
+        QDataStream in(this->socket);
 
-    // If this is the first exchange of this communication, get the full message size
-    if (this->messageSize == 0){
-        if (this->socket->bytesAvailable() < (int)sizeof(quint16))
-             return;
-        in >> this->messageSize;
+        // If this is the first exchange of this communication, get the full message size
+        if (this->messageSize == 0){
+            if (this->socket->bytesAvailable() < (int)sizeof(quint16))
+                 return;
+            in >> this->messageSize;
+        }
+        if(this->messageType == MessageType::GUPPYMESSAGEUNKNOWN){
+            if (this->socket->bytesAvailable() < (int)sizeof(quint8))
+                 return;
+            quint8 tmp;
+            in >> tmp;
+            this->messageType = static_cast<enum MessageType>(tmp);
+        }
+
+        qDebug() << "reading from server buffer.size():" << this->messageSize << "Type:" << static_cast<quint8>(this->messageType);
+
+        // If we still don't have the full message we are waiting for the next exchange
+        if (this->socket->bytesAvailable() < this->messageSize)
+            return;
+
+        // All the message has been received, let's get the data !
+        if (this->messageType == MessageType::GUPPYSERVERCLIENTMESSAGE){
+            GuppyServerClientMessage *newMessageReceived = new GuppyServerClientMessage();
+            newMessageReceived->deserialize(in);
+
+            // Todo: Do it in a function
+            publicMessageList->append(tr("<strong>") + newMessageReceived->GetSender() + tr("</strong> : ") + newMessageReceived->GetMessage());
+
+        } else if (this->messageType == MessageType::GUPPYSENDUSERSLIST){
+            GuppySendUserList *newMessageReceived = new GuppySendUserList();
+            newMessageReceived->deserialize(in);
+
+            UpdaterListOfUsersConnected(newMessageReceived->GetListOfUsers());
+
+        }
+
+
+
+        // reset messageSize for the next messages
+        this->messageSize = 0;
+        this->messageType = MessageType::GUPPYMESSAGEUNKNOWN;
     }
-    if(this->messageType == MessageType::GUPPYMESSAGEUNKNOWN){
-        if (this->socket->bytesAvailable() < (int)sizeof(quint8))
-             return;
-        quint8 tmp;
-        in >> tmp;
-        this->messageType = static_cast<enum MessageType>(tmp);
-    }
-
-    qDebug() << "Chat Message from server socket->bytesAvailable()" << socket->bytesAvailable();
-    qDebug() << "Chat Message from server messageSize:" <<this->messageSize;
-    qDebug() << "Chat Message from server messageType:" << static_cast<quint8>(this->messageType);
-
-    // If we still don't have the full message we are waiting for the next exchange
-    if (this->socket->bytesAvailable() < this->messageSize)
-        return;
-
-    // All the message has been received, let's get the data !
-    if (this->messageType == MessageType::GUPPYSERVERCLIENTMESSAGE){
-        GuppyServerClientMessage *newMessageReceived = new GuppyServerClientMessage();
-        newMessageReceived->deserialize(in);
-
-        // Todo: Do it in a function
-        publicMessageList->append(tr("<strong>") + newMessageReceived->GetSender() + tr("</strong> : ") + newMessageReceived->GetMessage());
-
-    }
-    QString str;
-    in >> str;
-    // reset messageSize for the next messages
-    this->messageSize = 0;
-    this->messageType = MessageType::GUPPYMESSAGEUNKNOWN;
 }
 
 /*------------------------------  ClientChat::disconnect slot  ----------------------------------

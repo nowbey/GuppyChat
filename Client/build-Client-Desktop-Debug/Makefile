@@ -373,10 +373,10 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_ClientChat.cpp moc_ClientConnection.cpp
 moc_ClientChat.cpp: ../ClientChat.h \
 		ui_ClientChat.h \
-		../../GC_common/message.h \
 		../../GC_common/GuppyClientServerMessage.h \
 		../../GC_common/IGuppyMessage.h \
 		../../GC_common/GuppyServerClientMessage.h \
+		../../GC_common/GuppySendUserList.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Client/build-Client-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Client -I/home/jeff/GuppyChat/Client -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientChat.h -o moc_ClientChat.cpp
@@ -388,9 +388,9 @@ moc_ClientConnection.cpp: ../ClientConnection.h \
 		../../GC_common/GuppyUserValidation.h \
 		../ClientChat.h \
 		ui_ClientChat.h \
-		../../GC_common/message.h \
 		../../GC_common/GuppyClientServerMessage.h \
 		../../GC_common/GuppyServerClientMessage.h \
+		../../GC_common/GuppySendUserList.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Client/build-Client-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Client -I/home/jeff/GuppyChat/Client -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientConnection.h -o moc_ClientConnection.cpp
@@ -427,17 +427,17 @@ main.o: ../main.cpp ../ClientConnection.h \
 		../../GC_common/GuppyUserValidation.h \
 		../ClientChat.h \
 		ui_ClientChat.h \
-		../../GC_common/message.h \
 		../../GC_common/GuppyClientServerMessage.h \
-		../../GC_common/GuppyServerClientMessage.h
+		../../GC_common/GuppyServerClientMessage.h \
+		../../GC_common/GuppySendUserList.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
 ClientChat.o: ../ClientChat.cpp ../ClientChat.h \
 		ui_ClientChat.h \
-		../../GC_common/message.h \
 		../../GC_common/GuppyClientServerMessage.h \
 		../../GC_common/IGuppyMessage.h \
-		../../GC_common/GuppyServerClientMessage.h
+		../../GC_common/GuppyServerClientMessage.h \
+		../../GC_common/GuppySendUserList.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ClientChat.o ../ClientChat.cpp
 
 ClientConnection.o: ../ClientConnection.cpp ../ClientConnection.h \
@@ -447,9 +447,9 @@ ClientConnection.o: ../ClientConnection.cpp ../ClientConnection.h \
 		../../GC_common/GuppyUserValidation.h \
 		../ClientChat.h \
 		ui_ClientChat.h \
-		../../GC_common/message.h \
 		../../GC_common/GuppyClientServerMessage.h \
-		../../GC_common/GuppyServerClientMessage.h
+		../../GC_common/GuppyServerClientMessage.h \
+		../../GC_common/GuppySendUserList.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ClientConnection.o ../ClientConnection.cpp
 
 qrc_Images.o: qrc_Images.cpp 

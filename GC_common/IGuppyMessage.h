@@ -2,6 +2,7 @@
 #define GUPPYMESSAGE_H
 
 #include <QString>
+#include <QDataStream>
 
 enum class MessageType
 {
@@ -9,7 +10,7 @@ enum class MessageType
     GUPPYUSERVALIDATION,
     GUPPYCLIENTSERVERMESSAGE,
     GUPPYSERVERCLIENTMESSAGE,
-    GUPPYGETUSERSLIST,
+    GUPPYSENDUSERSLIST,
     GUPPYMESSAGEUNKNOWN
  };
 
