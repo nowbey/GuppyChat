@@ -62,6 +62,9 @@ void ServerManagement::ClientDisconnection(Client *client){
 
     // Update the list of connected users
     UpdateServerDisplayUserList();
+
+    UpdateClientDisplayUserList();
+
 }
 
 /*-----------------------  ServerManagement ClientIdentified  -----------------------------
@@ -77,9 +80,7 @@ void ServerManagement::ClientIdentified(Client *client){
 
     UpdateServerDisplayUserList();
 
-
     UpdateClientDisplayUserList();
-
 }
 
 

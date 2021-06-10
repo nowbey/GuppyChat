@@ -37,7 +37,7 @@ public:
     QLabel *ListOfUsersLabel;
     QListWidget *ListOfUsersWidget;
     QTabWidget *tabWidget;
-    QWidget *tab;
+    QWidget *Tab;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_4;
@@ -122,7 +122,7 @@ public:
 "     subcontrol-position: left;\n"
 " }\n"
 "\n"
-"#tab{\n"
+"#Tab{\n"
 "	border-left: 1px solid #FF17365D;\n"
 "	border-right: 1px solid #FF17365D;\n"
 "	border-bottom: 1px solid #FF17365D;\n"
@@ -217,27 +217,27 @@ public:
         tabWidget->setDocumentMode(true);
         tabWidget->setTabsClosable(false);
         tabWidget->setMovable(true);
-        tab = new QWidget();
-        tab->setObjectName(QString::fromUtf8("tab"));
-        tab->setEnabled(true);
+        Tab = new QWidget();
+        Tab->setObjectName(QString::fromUtf8("Tab"));
+        Tab->setEnabled(true);
         QFont font;
         font.setStrikeOut(false);
-        tab->setFont(font);
-        gridLayout = new QGridLayout(tab);
+        Tab->setFont(font);
+        gridLayout = new QGridLayout(Tab);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        label_4 = new QLabel(tab);
+        label_4 = new QLabel(Tab);
         label_4->setObjectName(QString::fromUtf8("label_4"));
 
         horizontalLayout_2->addWidget(label_4);
 
-        message = new QLineEdit(tab);
+        message = new QLineEdit(Tab);
         message->setObjectName(QString::fromUtf8("message"));
 
         horizontalLayout_2->addWidget(message);
 
-        sendButton = new QPushButton(tab);
+        sendButton = new QPushButton(Tab);
         sendButton->setObjectName(QString::fromUtf8("sendButton"));
         sendButton->setIcon(icon);
 
@@ -246,13 +246,13 @@ public:
 
         gridLayout->addLayout(horizontalLayout_2, 1, 0, 1, 1);
 
-        publicMessageList = new QTextEdit(tab);
+        publicMessageList = new QTextEdit(Tab);
         publicMessageList->setObjectName(QString::fromUtf8("publicMessageList"));
         publicMessageList->setReadOnly(true);
 
         gridLayout->addWidget(publicMessageList, 0, 0, 1, 1);
 
-        tabWidget->addTab(tab, QString());
+        tabWidget->addTab(Tab, QString());
 
         gridLayout_2->addWidget(tabWidget, 0, 1, 1, 1);
 
@@ -276,7 +276,7 @@ public:
         ListOfUsersLabel->setText(QApplication::translate("ClientChat", "List of Users", nullptr));
         label_4->setText(QApplication::translate("ClientChat", "Message :", nullptr));
         sendButton->setText(QApplication::translate("ClientChat", "Send", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("ClientChat", "Public", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Tab), QApplication::translate("ClientChat", "Public", nullptr));
     } // retranslateUi
 
 };

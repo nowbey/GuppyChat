@@ -1,8 +1,4 @@
 #include "ClientChat.h"
-#include <QGroupBox>
-#include <QRadioButton>
-#include <QScrollArea>
-#include <QLabel>
 
 
 /*--------------------------------  ClientChat constructor  --------------------------------------
@@ -25,6 +21,8 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
 
     // Remove the ugly white bar on tabWidget !!!
     tabWidget->tabBar()->setDrawBase(false);
+
+    tabWidget->addTab(new ClientTabChat("Private", this),"Private");
 
 
     // Connect all usefull socket signals to the ClientChat slots

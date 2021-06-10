@@ -91,7 +91,7 @@ QTabBar::tab {
      subcontrol-position: left;
  }
 
-#tab{
+#Tab{
 	border-left: 1px solid #FF17365D;
 	border-right: 1px solid #FF17365D;
 	border-bottom: 1px solid #FF17365D;
@@ -285,7 +285,7 @@ QTabBar::tab {
         <property name="movable">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="tab">
+        <widget class="QWidget" name="Tab">
          <property name="enabled">
           <bool>true</bool>
          </property>

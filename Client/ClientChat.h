@@ -5,6 +5,13 @@
 #include <QDialog>
 #include <QtNetwork>
 #include <QString>
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QScrollArea>
+#include <QLabel>
+
+#include "ClientTabChat.h"
+
 #include "ui_ClientChat.h"
 
 #include "../GC_common/GuppyClientServerMessage.h"

@@ -8,15 +8,18 @@ INCLUDEPATH += .
 # Input
 HEADERS += \
     ClientChat.h \
-    ClientConnection.h
+    ClientConnection.h \
+    ClientTabChat.h
 
 SOURCES += main.cpp \
     ClientChat.cpp \
-    ClientConnection.cpp
+    ClientConnection.cpp \
+    ClientTabChat.cpp
 
 FORMS += \
     ClientChat.ui \
-    ClientConnection.ui
+    ClientConnection.ui \
+    ClientTabChat.ui
 
 RESOURCES += \
     Images.qrc
