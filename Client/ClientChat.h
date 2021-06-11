@@ -53,6 +53,7 @@ private:
 
 
 private slots:
+    void on_tabWidget_tabCloseRequested(int index);
     void on_ListOfUsersWidget_itemDoubleClicked(QListWidgetItem *item);
 
     void SendMessageToServer(const GuppyClientServerMessage& message);

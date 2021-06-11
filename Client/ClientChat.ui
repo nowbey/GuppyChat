@@ -25,74 +25,72 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#ClientChat{
-	background:black;
-	border:0px;
+    background:black;
+    border:0px;
 }
 
 #frame{
-	background:url(:/img/background2.jpg);
-	border:0px;
+    background:url(:/img/background2.jpg);
+    border:0px;
 }
 
 #Logo{
-	image:url(:/img/GuppyChat_espace2.png)
+    image:url(:/img/GuppyChat_espace2.png)
 }
 
 #ListOfUsersWidget {
 
-	border-left: 1px solid #FF17365D;
-	border-right: 1px solid #FF17365D;
-	border-bottom: 1px solid #FF17365D;
+    border-left: 1px solid #FF17365D;
+    border-right: 1px solid #FF17365D;
+    border-bottom: 1px solid #FF17365D;
 
-	border-bottom-left-radius: 15px;
-	border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 
-	background: rgba( 255, 255, 255, 80% );
-	padding-bottom:15px;
-	padding-left:15px;
-	padding-right:15px;
+    background: rgba( 255, 255, 255, 80% );
+    padding-bottom:15px;
+    padding-left:15px;
+    padding-right:15px;
 }
 
 #ListOfUsersLabel {
-	border-left: 1px solid #FF17365D;
-	border-right: 1px solid #FF17365D;
-	
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
-	padding: 5px 0px;
+    border-left: 1px solid #FF17365D;
+    border-right: 1px solid #FF17365D;
+    
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 5px 0px;
 
-	background: rgba( 255, 255, 255, 80% );
+    background: rgba( 255, 255, 255, 80% );
 
-	qproperty-alignment: AlignCenter;
-	color: rgb(0, 0, 0, 100%);
+    qproperty-alignment: AlignCenter;
+    color: rgb(0, 0, 0, 100%);
 }
 
 QTabBar::tab {
-	background: rgba( 255, 255, 255, 80% );
-	border-left: 1px solid #FF17365D;
+    background: rgba( 255, 255, 255, 80% );
+    border-left: 1px solid #FF17365D;
     border-right: 1px solid #FF17365D;
     border-top: 1px solid #FF17365D;
 
-	border-bottom:0px;
-
-     border-top-left-radius: 15px;
-     border-top-right-radius: 15px;
-     padding: 2px;
-	  padding-left:15px;
-	  padding-right:-10px;
- 
-
+    border-bottom:0px;
+	
+	qproperty-alignment: AlignCenter;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 2px;
+    padding-left: 15px;
 }
 
  QTabBar::tab:!selected {
-	background: rgba( 255, 255, 255, 40% );
+    background: rgba( 255, 255, 255, 40% );
+ }
+ QTabBar::tab:selected {
+    
  }
 
 QTabBar::close-button {
-    subcontrol-origin: padding;
-    subcontrol-position: right; 
-    width: 13px;
-    height: 13px;
+  
 
 }
 
