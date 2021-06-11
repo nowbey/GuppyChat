@@ -50,6 +50,7 @@ private:
 private:
     void UpdaterListOfUsersConnected(QList<QString> ListOfUsersConnected);
     void DisplayMessage(const GuppyServerClientMessage& message);
+    void CreateNewTab(const QString& Tabname) const;
 
 
 private slots:

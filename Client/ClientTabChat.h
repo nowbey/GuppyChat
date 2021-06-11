@@ -21,7 +21,7 @@ class ClientTabChat: public QWidget, private Ui::ChatTab
 {
     Q_OBJECT
 public:
-    ClientTabChat(QString TabChatName, QWidget *parent = nullptr);
+    ClientTabChat(QString TabChatName, QString UserName, QWidget *parent = nullptr);
     ~ClientTabChat();
 
 public:
@@ -44,6 +44,7 @@ signals:
 
 private:
     QString TabChatName;
+    QString UserName;
 };
 
 

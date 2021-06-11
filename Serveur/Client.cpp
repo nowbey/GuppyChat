@@ -79,10 +79,11 @@ void Client::DataReceived()
 
     // else, we only expect him to send GUPPYCLIENTSERVERMESSAGE message
     }else if (this->messageType == MessageType::GUPPYCLIENTSERVERMESSAGE){
+        qDebug() << "DataReceived: GUPPYCLIENTSERVERMESSAGE recieved";
         GuppyClientServerMessage* newMessageReceived = new GuppyClientServerMessage();
         newMessageReceived->deserialize(in);
 
-        GuppyServerClientMessage* newMessageToSend = new GuppyServerClientMessage(newMessageReceived->GetMessage(),this->clientName,"Public");
+        GuppyServerClientMessage* newMessageToSend = new GuppyServerClientMessage(newMessageReceived->GetMessage(),this->clientName,newMessageReceived->GetRecipient());
         emit MessageToBeDelivered(*newMessageToSend);
     }
 
@@ -132,7 +133,7 @@ void Client::SendMessageToClient(const GuppyServerClientMessage& message)
     message.serialize(stream);
     stream.device()->seek(0);
     stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
-    qDebug() << "writing GuppyServerClientMessage for client buffer.size():" << buffer.size() << "Type:" << static_cast<quint8>(message.GetMessageType());
+    qDebug() << "SendMessageToClient: writing GuppyServerClientMessage for client buffer.size():" << buffer.size() << "Type:" << static_cast<quint8>(message.GetMessageType());
 
     this->Socket->write(buffer);
 }
@@ -151,7 +152,7 @@ void Client::SendUserListToClient(const GuppySendUserList& UserList)
     UserList.serialize(stream);
     stream.device()->seek(0);
     stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
-    qDebug() << "Sending messageList to client:" << this->clientName;
+    qDebug() << "SendUserListToClient: Sending messageList to client:" << this->clientName;
 
     this->Socket->write(buffer);
 }
@@ -172,7 +173,7 @@ void Client::sendUserValidation(bool UserValidationStatus){
     UserValidation.serialize(stream);
     stream.device()->seek(0);
     stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
-    qDebug() << "writing for client buffer.size():" << buffer.size();
+    qDebug() << "sendUserValidation: writing for client buffer.size():" << buffer.size();
 
     this->Socket->write(buffer);
 

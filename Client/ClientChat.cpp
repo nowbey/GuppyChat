@@ -22,7 +22,7 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
     // Remove the ugly white bar on tabWidget !!!
     tabWidget->tabBar()->setDrawBase(false);
 
-    ClientTabChat *PublicTabChat = new ClientTabChat("Public");
+    ClientTabChat *PublicTabChat = new ClientTabChat("Public", this->userName);
 
     tabWidget->addTab(PublicTabChat,"Public");
     tabWidget->tabBar()->tabButton(0, QTabBar::RightSide)->hide();
@@ -51,40 +51,61 @@ void ClientChat::UpdaterListOfUsersConnected(QList<QString> ListOfUsersConnected
 
     // Update the display
     ListOfUsersWidget->addItems(ListOfUsersConnected);
+
+    // browse on private convs openned to display the user disconnection if required
 }
 
 void ClientChat::DisplayMessage(const GuppyServerClientMessage& message){
-    qDebug()<< "Message reçu à afficher dans l'onglet:" << message.GetRecipient();
-    for(int i=0; i< tabWidget->count();i++){
-        qDebug()<< "Onglet dispo:" << tabWidget->tabText(i);
-        if (message.GetRecipient() == tabWidget->tabText(i)){
-            QString MessageToDisplay = "<strong>" + message.GetSender() + ": </strong>" + message.GetMessage();
-            dynamic_cast<ClientTabChat*>(tabWidget->widget(i))->WriteMessage(MessageToDisplay);
-        }
+    int widgetIndex;
+    bool TableFounded = false;
+    if (message.GetRecipient() == "Public"){
+        qDebug()<< "Message recieved to be displayed in Public tab";
+        QString MessageToDisplay = "<strong>" + message.GetSender() + ": </strong>" + message.GetMessage();
+        dynamic_cast<ClientTabChat*>(tabWidget->widget(0))->WriteMessage(MessageToDisplay);
+    }else if (message.GetRecipient() == this->userName){
+        qDebug()<< "Message recieved to be displayed in "<< message.GetSender() << "Tab";
+        for(widgetIndex=1; widgetIndex< tabWidget->count();widgetIndex++){
+            if (message.GetSender() == tabWidget->tabText(widgetIndex)){
+                qDebug()<< "Tab exists:" << tabWidget->tabText(widgetIndex);
+                QString MessageToDisplay = "<strong>" + message.GetSender() + ": </strong>" + message.GetMessage();
+                dynamic_cast<ClientTabChat*>(tabWidget->widget(widgetIndex))->WriteMessage(MessageToDisplay);
+                TableFounded = true;
+            }
 
+        }
+        if (TableFounded == false){
+            qDebug()<< "Tab still not exists: " << message.GetSender();
+            CreateNewTab(message.GetSender());
+            QString MessageToDisplay = "<strong>" + message.GetSender() + ": </strong>" + message.GetMessage();
+            dynamic_cast<ClientTabChat*>(tabWidget->widget(widgetIndex))->WriteMessage(MessageToDisplay);
+
+        }
     }
 }
 
 
-
-
-
-void ClientChat::on_ListOfUsersWidget_itemDoubleClicked(QListWidgetItem *item)
-{
+void ClientChat::CreateNewTab(const QString& Tabname) const{
     bool TabAlreadyExists = false;
     int i;
     for(i=0; i< tabWidget->count();i++){
-        if (tabWidget->tabText(i) == item->text()){
+        if (tabWidget->tabText(i) == Tabname){
             TabAlreadyExists = true;
             tabWidget->setCurrentIndex(i);
           }
     }
 
     if (!TabAlreadyExists){
-        ClientTabChat *PublicTabChat = new ClientTabChat(item->text());
-        tabWidget->addTab(PublicTabChat,item->text());
-        tabWidget->setCurrentWidget(PublicTabChat);
+        ClientTabChat *PrivateTabChat = new ClientTabChat(Tabname, this->userName);
+        tabWidget->addTab(PrivateTabChat,Tabname);
+        tabWidget->setCurrentWidget(PrivateTabChat);
+        connect(PrivateTabChat, &ClientTabChat::MessageToBeDelivered, this, &ClientChat::SendMessageToServer);
     }
+
+}
+
+
+void ClientChat::on_ListOfUsersWidget_itemDoubleClicked(QListWidgetItem *item){
+  CreateNewTab(item->text());
 }
 
 void ClientChat::on_tabWidget_tabCloseRequested(int index){
@@ -100,6 +121,8 @@ void ClientChat::on_tabWidget_tabCloseRequested(int index){
  *  It stops the current socket
  *-----------------------------------------------------------------------------------------------*/
 void ClientChat::SendMessageToServer(const GuppyClientServerMessage& messageToSend){
+    qDebug()<< "Sending GUPPYCLIENTSERVERMESSAGE to server to" << messageToSend.GetRecipient();
+
     QByteArray buffer;
     QDataStream stream(&buffer, QIODevice::ReadWrite);
 
@@ -159,7 +182,6 @@ void ClientChat::dataReceived(){
             newMessageReceived->deserialize(in);
 
             UpdaterListOfUsersConnected(newMessageReceived->GetListOfUsers());
-
         }
 
         // reset messageSize for the next messages

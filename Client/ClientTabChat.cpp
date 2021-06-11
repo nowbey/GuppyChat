@@ -1,8 +1,9 @@
 #include "ClientTabChat.h"
 
-ClientTabChat::ClientTabChat(QString TabChatName, QWidget *parent) : QWidget(parent){
+ClientTabChat::ClientTabChat(QString TabChatName, QString UserName, QWidget *parent) : QWidget(parent){
     setupUi(this);
     this->TabChatName = TabChatName;
+    this->UserName = UserName;
 }
 
 ClientTabChat::~ClientTabChat(){
@@ -19,6 +20,7 @@ void ClientTabChat::on_ChatTab_sendButton_clicked(){
 
     //emit the signal with the message to send it
     emit MessageToBeDelivered(*messageToSend);
+    ChatTab_textChat->append("<strong>" + this->UserName + ":</strong> " + messageToSend->GetMessage());
 
     ChatTab_message->clear(); // clear the message field
     ChatTab_message->setFocus(); // set the focus message field

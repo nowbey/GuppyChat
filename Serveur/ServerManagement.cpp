@@ -89,11 +89,22 @@ void ServerManagement::ClientIdentified(Client *client){
  *-----------------------------------------------------------------------------------------------*/
 void ServerManagement::MessageToBeDelivered(const GuppyServerClientMessage& message) const{
     ServerLog(message.GetMessage(),message.GetSender());
+    qDebug() << "MessageToBeDelivered message to forwarded to " << message.GetRecipient();
 
     if(message.GetRecipient() == "Public"){
+        qDebug() << "MessageToBeDelivered Public message to be delivered";
         for (int i = 0; i < clients.size(); i++)
         {
-           clients[i]->SendMessageToClient(message);
+            if(clients[i]->GetClientName() != message.GetSender()){
+                clients[i]->SendMessageToClient(message);
+            }
+        }
+    }else{
+        for (int i = 0; i < clients.size(); i++){
+            if(message.GetRecipient() == clients[i]->GetClientName()){
+                qDebug() << "MessageToBeDelivered Private message to be delivered";
+                clients[i]->SendMessageToClient(message);
+            }
         }
     }
 }
