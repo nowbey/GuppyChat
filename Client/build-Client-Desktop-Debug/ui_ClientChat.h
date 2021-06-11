@@ -71,6 +71,7 @@ public:
 "	padding-left:15px;\n"
 "	padding-right:15px;\n"
 "}\n"
+"\n"
 "#ListOfUsersLabel {\n"
 "	border-left: 1px solid #FF17365D;\n"
 "	border-right: 1px solid #FF17365D;\n"
@@ -88,41 +89,36 @@ public:
 "QTabBar::tab {\n"
 "	background: rgba( 255, 255, 255, 80% );\n"
 "	border-left: 1px solid #FF17365D;\n"
-" "
-                        "   border-right: 1px solid #FF17365D;\n"
+""
+                        "    border-right: 1px solid #FF17365D;\n"
 "    border-top: 1px solid #FF17365D;\n"
 "\n"
 "	border-bottom:0px;\n"
 "\n"
 "     border-top-left-radius: 15px;\n"
 "     border-top-right-radius: 15px;\n"
-"\n"
-"     min-width: 8ex;\n"
 "     padding: 2px;\n"
+"	  padding-left:15px;\n"
+"	  padding-right:-10px;\n"
+" \n"
+"\n"
 "}\n"
 "\n"
 " QTabBar::tab:!selected {\n"
-"    margin-top: 8px; /* make non-selected tabs look smaller */\n"
-"	background: rgba( 255, 255, 255, 50% );\n"
+"	background: rgba( 255, 255, 255, 40% );\n"
 " }\n"
 "\n"
-" QTabBar::close-button {\n"
-"    /* todo image: url(close.png) */\n"
-"     subcontrol-position: left;\n"
-" }\n"
+"QTabBar::close-button {\n"
+"    subcontrol-origin: padding;\n"
+"    subcontrol-position: right; \n"
+"    width: 13px;\n"
+"    height: 13px;\n"
 "\n"
-"#Tab{\n"
-"	border-left: 1px solid #FF17365D;\n"
-"	border-right: 1px solid #FF17365D;\n"
-"	border-bottom: 1px solid #FF17365D;\n"
-"\n"
-"	border-bottom-right-radius:  15px;\n"
-"	border-bottom-left-radius:  15px;\n"
-"\n"
-"	top:15px;\n"
-"\n"
-"	background: rgba( 255, 255, 255, 80% );\n"
 "}\n"
+"\n"
+"\n"
+"\n"
+"\n"
 "\n"
 "\n"
 ""));
@@ -200,12 +196,16 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(tabWidget->sizePolicy().hasHeightForWidth());
         tabWidget->setSizePolicy(sizePolicy2);
+        tabWidget->setLayoutDirection(Qt::LeftToRight);
         tabWidget->setStyleSheet(QString::fromUtf8(""));
         tabWidget->setTabShape(QTabWidget::Rounded);
-        tabWidget->setElideMode(Qt::ElideLeft);
+        tabWidget->setIconSize(QSize(15, 15));
+        tabWidget->setElideMode(Qt::ElideNone);
+        tabWidget->setUsesScrollButtons(true);
         tabWidget->setDocumentMode(true);
-        tabWidget->setTabsClosable(false);
+        tabWidget->setTabsClosable(true);
         tabWidget->setMovable(true);
+        tabWidget->setTabBarAutoHide(false);
 
         gridLayout_2->addWidget(tabWidget, 0, 1, 1, 1);
 

@@ -25,6 +25,7 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
     ClientTabChat *PublicTabChat = new ClientTabChat("Public");
 
     tabWidget->addTab(PublicTabChat,"Public");
+    tabWidget->tabBar()->tabButton(0, QTabBar::RightSide)->hide();
 
     // Connect all usefull socket signals to the ClientChat slots
     connect(PublicTabChat, &ClientTabChat::MessageToBeDelivered, this, &ClientChat::SendMessageToServer);
@@ -69,17 +70,27 @@ void ClientChat::DisplayMessage(const GuppyServerClientMessage& message){
 void ClientChat::on_ListOfUsersWidget_itemDoubleClicked(QListWidgetItem *item)
 {
     bool TabAlreadyExists = false;
-    for(int i=0; i< tabWidget->count();i++){
-        if (tabWidget->tabText(i) == item->text()) TabAlreadyExists= true;
+    int i;
+    for(i=0; i< tabWidget->count();i++){
+        if (tabWidget->tabText(i) == item->text()){
+            TabAlreadyExists = true;
+            tabWidget->setCurrentIndex(i);
+          }
     }
 
-    if (TabAlreadyExists){
-        tabWidget->setFocus();
-    }
-    else{
+    if (!TabAlreadyExists){
         ClientTabChat *PublicTabChat = new ClientTabChat(item->text());
         tabWidget->addTab(PublicTabChat,item->text());
-        tabWidget->setFocus();
+        tabWidget->setCurrentWidget(PublicTabChat);
+        tabWidget->tabBar()->setStyleSheet("QTabBar::tab:!first{padding-right:4px;}");
+
+        /*
+        QPushButton *closeButton = new QPushButton();
+        closeButton->setText("x");
+        tabWidget->tabBar()->setTabButton(i, QTabBar::RightSide, closeButton);
+        connect(tabWidget->tabBar(), &QTabBar::tabCloseRequested, tabWidget->tabBar(), &QTabBar::removeTab);
+        connect(*closeButton, &QPushButton::clicked), this, SLOT(deleteTab(int)));
+        */
     }
 }
 
@@ -149,8 +160,6 @@ void ClientChat::dataReceived(){
             UpdaterListOfUsersConnected(newMessageReceived->GetListOfUsers());
 
         }
-
-
 
         // reset messageSize for the next messages
         this->messageSize = 0;
