@@ -172,6 +172,9 @@ public:
         ListOfUsersWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         ListOfUsersWidget->setAutoScroll(true);
         ListOfUsersWidget->setAutoScrollMargin(40);
+        ListOfUsersWidget->setProperty("showDropIndicator", QVariant(false));
+        ListOfUsersWidget->setDragEnabled(false);
+        ListOfUsersWidget->setDefaultDropAction(Qt::IgnoreAction);
         ListOfUsersWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
         ListOfUsersWidget->setTextElideMode(Qt::ElideNone);
         ListOfUsersWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -194,6 +197,7 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(tabWidget->sizePolicy().hasHeightForWidth());
         tabWidget->setSizePolicy(sizePolicy2);
+        tabWidget->setAcceptDrops(true);
         tabWidget->setLayoutDirection(Qt::LeftToRight);
         tabWidget->setStyleSheet(QString::fromUtf8(""));
         tabWidget->setTabShape(QTabWidget::Rounded);

@@ -1,6 +1,5 @@
 #include "ClientChat.h"
 
-
 /*--------------------------------  ClientChat constructor  --------------------------------------
  *
  * ClientChat (TcpSocket* socket, QString userName, QWidget *parent)
@@ -19,15 +18,22 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
     this->messageSize = 0;
     this->messageType = MessageType::GUPPYMESSAGEUNKNOWN;
 
+    // Protect the application for drag & drop between multiple instances
+    ListOfUsersWidget->setDragDropMode(QAbstractItemView::InternalMove);
+     tabWidget->tabBar()->acceptDrops();
+
+
     // Remove the ugly white bar on tabWidget !!!
     tabWidget->tabBar()->setDrawBase(false);
 
     ClientTabChat *PublicTabChat = new ClientTabChat("Public", this->userName);
 
+
+
     tabWidget->addTab(PublicTabChat,"Public");
     tabWidget->tabBar()->tabButton(0, QTabBar::RightSide)->hide();
     tabWidget->tabBar()->tabButton(0, QTabBar::RightSide)->resize(8,8);
-    //tabWidget->tabBar()->setStyleSheet("QTabBar::tab:!first{padding-right:-15px;}");
+
 
     // Connect all usefull socket signals to the ClientChat slots
     connect(PublicTabChat, &ClientTabChat::MessageToBeDelivered, this, &ClientChat::SendMessageToServer);
@@ -51,6 +57,7 @@ void ClientChat::UpdaterListOfUsersConnected(QList<QString> ListOfUsersConnected
 
     // Update the display
     ListOfUsersWidget->addItems(ListOfUsersConnected);
+
 
     // browse on private convs openned to display the user disconnection if required
 }
