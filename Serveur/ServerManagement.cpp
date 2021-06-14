@@ -57,7 +57,10 @@ void ServerManagement::ClientDisconnection(Client *client){
 
     clients.removeOne(client);
     ServerLog("Client disconnected - " + client->GetClientName());
-    // Send the information to users
+
+    GuppyServerClientMessage *NewClientConnection = new GuppyServerClientMessage("Bye <strong>" + client->GetClientName() + "</strong>, see you next time !", "Server", "Public");
+    MessageToBeDelivered(*NewClientConnection);
+
     delete client;
 
     // Update the list of connected users
@@ -103,7 +106,6 @@ void ServerManagement::MessageToBeDelivered(const GuppyServerClientMessage& mess
         for (int i = 0; i < clients.size(); i++){
             if(message.GetRecipient() == clients[i]->GetClientName()){
                 ServerLog(message.GetMessage(),message.GetSender() + " (Private to " + message.GetRecipient() +")");
-                qDebug() << "MessageToBeDelivered Private message to be delivered";
                 clients[i]->SendMessageToClient(message);
             }
         }
