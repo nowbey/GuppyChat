@@ -40,6 +40,7 @@ public:
         if (ServerManagement->objectName().isEmpty())
             ServerManagement->setObjectName(QString::fromUtf8("ServerManagement"));
         ServerManagement->resize(655, 300);
+        ServerManagement->setStyleSheet(QString::fromUtf8(""));
         gridLayout = new QGridLayout(ServerManagement);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         gridLayout->setContentsMargins(0, 0, 0, 0);

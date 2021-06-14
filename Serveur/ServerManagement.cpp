@@ -179,6 +179,13 @@ void ServerManagement::UpdateServerDisplayUserList() const{
     Userslist->clear();
     Userslist->addItems(allowedClients);
 
+    // Color in grey all users
+    for(int i = 0; i < Userslist->count(); ++i)
+    {
+        QListWidgetItem* item = Userslist->item(i);
+        item->setTextColor(QColor(150, 150, 150, 255));
+    }
+
 
     // Color connected users with green
     QList<QString> connectedClients ={};
