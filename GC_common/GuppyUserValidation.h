@@ -1,6 +1,7 @@
 #ifndef GUPPYUSERVALIDATION_H
 #define GUPPYUSERVALIDATION_H
 #include "IGuppyMessage.h"
+#include <QDebug>
 
 class GuppyUserValidation : public IGuppyMessage
 {

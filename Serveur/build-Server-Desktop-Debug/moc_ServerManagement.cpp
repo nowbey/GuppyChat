@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ServerManagement_t {
     QByteArrayData data[13];
-    char stringdata0[190];
+    char stringdata0[201];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,21 +37,21 @@ QT_MOC_LITERAL(2, 34, 0), // ""
 QT_MOC_LITERAL(3, 35, 19), // "ClientDisconnection"
 QT_MOC_LITERAL(4, 55, 7), // "Client*"
 QT_MOC_LITERAL(5, 63, 6), // "client"
-QT_MOC_LITERAL(6, 70, 16), // "ClientIdentified"
-QT_MOC_LITERAL(7, 87, 20), // "MessageToBeDelivered"
-QT_MOC_LITERAL(8, 108, 24), // "GuppyServerClientMessage"
-QT_MOC_LITERAL(9, 133, 7), // "message"
-QT_MOC_LITERAL(10, 141, 21), // "UserListToBeDelivered"
-QT_MOC_LITERAL(11, 163, 17), // "GuppySendUserList"
-QT_MOC_LITERAL(12, 181, 8) // "UserList"
+QT_MOC_LITERAL(6, 70, 27), // "ClientIdentificationRequest"
+QT_MOC_LITERAL(7, 98, 20), // "MessageToBeDelivered"
+QT_MOC_LITERAL(8, 119, 24), // "GuppyServerClientMessage"
+QT_MOC_LITERAL(9, 144, 7), // "message"
+QT_MOC_LITERAL(10, 152, 21), // "UserListToBeDelivered"
+QT_MOC_LITERAL(11, 174, 17), // "GuppySendUserList"
+QT_MOC_LITERAL(12, 192, 8) // "UserList"
 
     },
     "ServerManagement\0ClientConnection\0\0"
     "ClientDisconnection\0Client*\0client\0"
-    "ClientIdentified\0MessageToBeDelivered\0"
-    "GuppyServerClientMessage\0message\0"
-    "UserListToBeDelivered\0GuppySendUserList\0"
-    "UserList"
+    "ClientIdentificationRequest\0"
+    "MessageToBeDelivered\0GuppyServerClientMessage\0"
+    "message\0UserListToBeDelivered\0"
+    "GuppySendUserList\0UserList"
 };
 #undef QT_MOC_LITERAL
 
@@ -93,7 +93,7 @@ void ServerManagement::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         switch (_id) {
         case 0: _t->ClientConnection(); break;
         case 1: _t->ClientDisconnection((*reinterpret_cast< Client*(*)>(_a[1]))); break;
-        case 2: _t->ClientIdentified((*reinterpret_cast< Client*(*)>(_a[1]))); break;
+        case 2: _t->ClientIdentificationRequest((*reinterpret_cast< Client*(*)>(_a[1]))); break;
         case 3: _t->MessageToBeDelivered((*reinterpret_cast< const GuppyServerClientMessage(*)>(_a[1]))); break;
         case 4: _t->UserListToBeDelivered((*reinterpret_cast< const GuppySendUserList(*)>(_a[1]))); break;
         default: ;

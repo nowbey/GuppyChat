@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT += widgets network
+QT += widgets network sql
 DEPENDPATH += .
 INCLUDEPATH += .
 

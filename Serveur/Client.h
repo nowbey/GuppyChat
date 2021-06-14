@@ -19,18 +19,19 @@ class Client: public QObject
         ~Client();
 
     private:
-        QString clientName;
+        QString clientUserName;
+        QString clientPassword;
         QTcpSocket* Socket;
         quint16 messageSize;
         MessageType messageType;
         bool UserValidation;
 
     public:
-        const QString& GetClientName() const;
+        const QString& GetClientUserName() const;
+        const QString& GetClientPassword() const;
+        bool GetUserValidation() const;
         void SendMessageToClient(const GuppyServerClientMessage& message);
         void SendUserListToClient(const GuppySendUserList& userList);
-
-    private:
         void sendUserValidation(bool UserValidationStatus);
 
     private slots:
@@ -39,7 +40,7 @@ class Client: public QObject
 
     signals:
         void ClientDisconnected(Client* thisClient);
-        void NewClientIdentified(Client* thisClient);
+        void NewClientIdentificationRequest(Client *client);
         void MessageToBeDelivered (const GuppyServerClientMessage& message);
 
 };

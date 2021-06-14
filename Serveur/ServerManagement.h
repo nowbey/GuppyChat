@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include <QtNetwork>
+#include <QSqlQuery>
 
 #include "ui_ServerManagement.h"
 
@@ -28,20 +29,23 @@ public:
 private slots:
     void ClientConnection();
     void ClientDisconnection(Client *client);
-    void ClientIdentified(Client *client);
+    void ClientIdentificationRequest(Client *client);
 
     void MessageToBeDelivered(const GuppyServerClientMessage& message) const;
     void UserListToBeDelivered(const GuppySendUserList& UserList) const;
+
 
 private:
     void ServerLog(QString message) const;
     void ServerLog(QString message,QString sender) const;
     void UpdateServerDisplayUserList() const;
     void UpdateClientDisplayUserList() const;
+    void OpenDatabase(QSqlDatabase sqlitedb, QString DatabasePath);
 
 private:
     QList<Client *> clients;
     QTcpServer *server;
+    QSqlDatabase sqlitedb;
 };
 
 #endif

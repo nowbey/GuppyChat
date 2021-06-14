@@ -43,6 +43,7 @@ private slots:
     *-----------------------------------------------------------------------------------------------*/
     void on_connectButton_clicked();
     void on_userName_returnPressed();// Pressing the Enter key has the same behavior as clicking the "connectButton" button.
+    void on_userPassword_returnPressed();// Pressing the Enter key has the same behavior as clicking the "connectButton" button.
 
     /*---------------------------  ClientConnection::connected slot  ---------------------------------
      *  This slot is called when the connection with server succeeded

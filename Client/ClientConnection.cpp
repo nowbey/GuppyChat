@@ -41,6 +41,10 @@ void ClientConnection::on_connectButton_clicked(){
 void ClientConnection::on_userName_returnPressed(){
     on_connectButton_clicked();
 }
+// Pressing the Enter key has the same behavior as clicking the "connectButton" button.
+void ClientConnection::on_userPassword_returnPressed(){
+    on_connectButton_clicked();
+}
 
 /*---------------------------  ClientConnection::connected slot  ---------------------------------
  *  This slot is called when the connection with server succeeded
@@ -80,10 +84,6 @@ void ClientConnection::dataReceived(){
         this->messageType = static_cast<enum MessageType>(tmp);
     }
 
-    qDebug() << "Connection Message from server socket->bytesAvailable()" << socket->bytesAvailable();
-    qDebug() << "Connection Message from server messageSize:" <<this->messageSize;
-    qDebug() << "Connection Message from server messageType:" << static_cast<quint8>(this->messageType);
-
     // If we still don't have the full message we are waiting for the next exchange
     if (this->socket->bytesAvailable() < this->messageSize)
         return;
@@ -93,11 +93,14 @@ void ClientConnection::dataReceived(){
         GuppyUserValidation *newMessageReceived = new GuppyUserValidation();
         newMessageReceived->deserialize(in);
 
+        qDebug() << "GUPPYUSERVALIDATION message recieved" << newMessageReceived->GetGuppyUserValidationVar();
         if (newMessageReceived->GetGuppyUserValidationVar() == true){
             fenetreChat = new ClientChat(socket,  userName->text());
             disconnect(socket, &QTcpSocket::readyRead, this, &ClientConnection::dataReceived);
             fenetreChat->show();
             this->close();
+        }else{
+            QMessageBox::information(this, "Connection refused by server", "The credentials are incorrect");
         }
     }
     // reset messageSize for the next messages
@@ -116,13 +119,13 @@ void ClientConnection::errorSocket(QAbstractSocket::SocketError error){
             QMessageBox::critical(this, "Unable to find the server", "Make sure that ther server is running and check the IP address and port");
             break;
         case QAbstractSocket::ConnectionRefusedError:
-            QMessageBox::critical(this, "Connection refused by the server", "maybe you're knocking on the wrong door");
+            QMessageBox::information(this, "Unable to find the server", "maybe you're knocking on the wrong door, Make sure that ther server is running and check the IP address");
             break;
         case QAbstractSocket::RemoteHostClosedError:
-            QMessageBox::critical(this, "Connection aborted by the server", "Get out of here !");
+            QMessageBox::information(this, "Connection refused by server", "The credentials are incorrect");
             break;
         default:
-            QMessageBox::critical(this, "ERROR", socket->errorString());
+            qDebug() << "ERROR" << socket->errorString();
     }
 }
 

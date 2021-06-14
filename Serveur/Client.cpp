@@ -10,7 +10,8 @@
  *-----------------------------------------------------------------------------------------------*/
 Client::Client(QTcpSocket* Socket)
 {
-    clientName = "Unknown";
+    clientUserName = "Unknown";
+    clientPassword = "";
     messageSize = 0;
     UserValidation = false;
     messageType = MessageType::GUPPYMESSAGEUNKNOWN;
@@ -67,14 +68,11 @@ void Client::DataReceived()
              GuppySendCredentials* newMessageReceived = new GuppySendCredentials();
              newMessageReceived->deserialize(in);
 
+             this->clientUserName = newMessageReceived->GetGuppyUser();
+             this->clientPassword = newMessageReceived->GetGuppyPassword();
+
              // Check the user credentials
-
-             this->UserValidation = true;
-             this->clientName = newMessageReceived->GetGuppyUser();
-
-
-             sendUserValidation(this->UserValidation);
-             emit NewClientIdentified(this);
+             emit NewClientIdentificationRequest(this);
          }
 
     // else, we only expect him to send GUPPYCLIENTSERVERMESSAGE message
@@ -83,7 +81,7 @@ void Client::DataReceived()
         GuppyClientServerMessage* newMessageReceived = new GuppyClientServerMessage();
         newMessageReceived->deserialize(in);
 
-        GuppyServerClientMessage* newMessageToSend = new GuppyServerClientMessage(newMessageReceived->GetMessage(),this->clientName,newMessageReceived->GetRecipient());
+        GuppyServerClientMessage* newMessageToSend = new GuppyServerClientMessage(newMessageReceived->GetMessage(),this->clientUserName,newMessageReceived->GetRecipient());
         emit MessageToBeDelivered(*newMessageToSend);
     }
 
@@ -105,7 +103,9 @@ void Client::ClientDisconnection()
     if (socket == nullptr)
         return;
     // Send the ClientDisconnected signal indicating which client is disconnected
-    emit ClientDisconnected(this);
+    if (this->UserValidation){
+        emit ClientDisconnected(this);
+    }
 }
 
 
@@ -115,8 +115,18 @@ void Client::ClientDisconnection()
 /*---------------------------------  Client GetClientName  ----------------------------------
  *  Getter on the clientName attribute
  *-----------------------------------------------------------------------------------------*/
-const QString& Client::GetClientName() const{
-    return this->clientName;
+const QString& Client::GetClientUserName() const{
+    return this->clientUserName;
+}
+/*---------------------------------  Client Password  ----------------------------------
+ *  Getter on the clientName attribute
+ *-----------------------------------------------------------------------------------------*/
+const QString& Client::GetClientPassword() const{
+    return this->clientPassword;
+}
+
+bool Client::GetUserValidation() const{
+    return this->UserValidation;
 }
 
 /*-----------------------------  Client SendMessageToClient  -------------------------------
@@ -152,7 +162,7 @@ void Client::SendUserListToClient(const GuppySendUserList& UserList)
     UserList.serialize(stream);
     stream.device()->seek(0);
     stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
-    qDebug() << "SendUserListToClient: Sending messageList to client:" << this->clientName;
+    qDebug() << "SendUserListToClient: Sending messageList to client:" << this->clientUserName;
 
     this->Socket->write(buffer);
 }
@@ -163,19 +173,24 @@ void Client::SendUserListToClient(const GuppySendUserList& UserList)
  *  It inform the Client of the server server decision.
  *-----------------------------------------------------------------------------------------*/
 void Client::sendUserValidation(bool UserValidationStatus){
+    this->UserValidation = UserValidationStatus;
     QByteArray buffer;
     QDataStream stream(&buffer, QIODevice::ReadWrite);
 
-    GuppyUserValidation UserValidation = new GuppyUserValidation(UserValidationStatus);
+    GuppyUserValidation *UserValidation = new GuppyUserValidation(UserValidationStatus);
 
     stream << (quint16) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
-    stream << static_cast<quint8>(UserValidation.GetMessageType());
-    UserValidation.serialize(stream);
+    stream << static_cast<quint8>(UserValidation->GetMessageType());
+    UserValidation->serialize(stream);
     stream.device()->seek(0);
     stream << (quint16) (buffer.size() - sizeof(quint16) - sizeof(quint8));
-    qDebug() << "sendUserValidation: writing for client buffer.size():" << buffer.size();
+    qDebug() << "Sending user validation message with value: " << UserValidationStatus;
 
     this->Socket->write(buffer);
+
+    if(!UserValidationStatus){
+        this->Socket->close();
+    }
 
 }
 

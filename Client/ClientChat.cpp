@@ -20,8 +20,6 @@ ClientChat::ClientChat(QTcpSocket* socket, QString userName, QWidget *parent) : 
 
     // Protect the application for drag & drop between multiple instances
     ListOfUsersWidget->setDragDropMode(QAbstractItemView::InternalMove);
-     tabWidget->tabBar()->acceptDrops();
-
 
     // Remove the ugly white bar on tabWidget !!!
     tabWidget->tabBar()->setDrawBase(false);

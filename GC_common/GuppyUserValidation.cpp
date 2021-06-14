@@ -6,13 +6,14 @@ GuppyUserValidation::GuppyUserValidation(){
 }
 
 GuppyUserValidation::GuppyUserValidation(bool GuppyUserValidationVar) : GuppyUserValidationVar(GuppyUserValidationVar){
+    this->GuppyUserValidationVar = GuppyUserValidationVar;
     this->MessageObjectType = MessageType::GUPPYUSERVALIDATION;
 }
 
 
 
-bool  GuppyUserValidation::GetGuppyUserValidationVar() const{
-    return GuppyUserValidationVar;
+bool GuppyUserValidation::GetGuppyUserValidationVar() const{
+    return this->GuppyUserValidationVar;
 }
 
 
