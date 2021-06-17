@@ -31,8 +31,8 @@ public:
     QLabel *label;
     QListWidget *Userslist;
     QHBoxLayout *horizontalLayout;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
+    QPushButton *addUser;
+    QPushButton *removeUser;
     QTextEdit *ServerLogs;
 
     void setupUi(QWidget *ServerManagement)
@@ -65,15 +65,15 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        pushButton = new QPushButton(frame);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        addUser = new QPushButton(frame);
+        addUser->setObjectName(QString::fromUtf8("addUser"));
 
-        horizontalLayout->addWidget(pushButton);
+        horizontalLayout->addWidget(addUser);
 
-        pushButton_2 = new QPushButton(frame);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        removeUser = new QPushButton(frame);
+        removeUser->setObjectName(QString::fromUtf8("removeUser"));
 
-        horizontalLayout->addWidget(pushButton_2);
+        horizontalLayout->addWidget(removeUser);
 
 
         gridLayout_2->addLayout(horizontalLayout, 2, 0, 1, 1);
@@ -97,8 +97,8 @@ public:
     {
         ServerManagement->setWindowTitle(QApplication::translate("ServerManagement", "GuppyChat - Server", nullptr));
         label->setText(QApplication::translate("ServerManagement", "Allowed users", nullptr));
-        pushButton->setText(QApplication::translate("ServerManagement", "Add", nullptr));
-        pushButton_2->setText(QApplication::translate("ServerManagement", "Remove", nullptr));
+        addUser->setText(QApplication::translate("ServerManagement", "Add", nullptr));
+        removeUser->setText(QApplication::translate("ServerManagement", "Remove", nullptr));
     } // retranslateUi
 
 };

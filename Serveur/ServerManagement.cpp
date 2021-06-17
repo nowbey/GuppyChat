@@ -12,13 +12,10 @@
  *-----------------------------------------------------------------------------------------------*/
 ServerManagement::ServerManagement(QWidget *parent) :  QWidget(parent){
     setupUi(this);
-
-    OpenDatabase(this->sqlitedb, "./GuppyChatServer_DB.sqlite");
-
+    SQLDatabaseManager = new DatabaseManager("./GuppyChatServer_DB.sqlite");
     UpdateServerDisplayUserList();
 
-    // Run the Server
-    server = new QTcpServer(this);
+    server = new QTcpServer(this); // Run the Server
     if (!server->listen(QHostAddress::Any, 50885)){ // Server start: all authorized IP authorized on port 50585
       QMessageBox::critical(this, "Unable to run the server",  server->errorString());
     }
@@ -79,24 +76,14 @@ void ServerManagement::ClientDisconnection(Client *client){
  *  This methode is called when a Client Identification Request is recieved from a client
  *-----------------------------------------------------------------------------------------------*/
 void ServerManagement::ClientIdentificationRequest(Client *client){
-
-    bool UserValidated = false;
     bool alreadyConnected = false;
-
-    QSqlQuery query;
-    query.exec("SELECT * FROM Clients where (user = '" + client->GetClientUserName() + "' and password = '" + client->GetClientPassword() + "') limit 1");
-
-    while (query.next()) {
-        UserValidated = true;
-    }
+    bool UserValidated = SQLDatabaseManager->IsItAnAllowedUser(client->GetClientUserName(), client->GetClientPassword());
 
     if (UserValidated){
         // Check if the user is already connected
-        foreach (Client *alreadyconnectedclient, this->clients) {
-            if (alreadyconnectedclient->GetClientUserName() == client->GetClientUserName() && alreadyconnectedclient->GetUserValidation() == true){
-             alreadyConnected = true;
-            }
-        }
+        foreach (Client *alreadyconnectedclient, this->clients)
+            if (alreadyconnectedclient->GetClientUserName() == client->GetClientUserName() && alreadyconnectedclient->GetUserValidation() == true)
+                alreadyConnected = true;
 
         if (!alreadyConnected){
             ServerLog("New client - Credentials accepted for <strong>" + client->GetClientUserName() + "</strong>");
@@ -156,6 +143,21 @@ void ServerManagement::UserListToBeDelivered(const GuppySendUserList& UserList) 
     }
 }
 
+void ServerManagement::on_addUser_clicked(){
+
+    ServerNewUserForm *CreateNewUserForm = new ServerNewUserForm(this->SQLDatabaseManager);
+    CreateNewUserForm->setAttribute( Qt::WA_DeleteOnClose );
+    connect( CreateNewUserForm, &ServerNewUserForm::destroyed, this, &ServerManagement::UpdateServerDisplayUserList);
+    CreateNewUserForm->show();
+}
+
+void ServerManagement::on_removeUser_clicked(){
+    foreach (QListWidgetItem *NAME, Userslist->selectedItems()) {
+       this->SQLDatabaseManager->RemoveRowInDatabase(NAME->text());
+     }
+     UpdateServerDisplayUserList();
+}
+
 
 void ServerManagement::ServerLog(QString message) const{
     ServerLogs->append(tr("<strong>Server logs: </strong>") + message );
@@ -166,26 +168,17 @@ void ServerManagement::ServerLog(QString message,QString sender) const{
 }
 
 void ServerManagement::UpdateServerDisplayUserList() const{
-    // Get the list of allowed users from database
-    QList<QString> allowedClients ={};
-    QSqlQuery query;
-    query.exec("SELECT * FROM Clients");
-
-    while (query.next()) {
-        allowedClients.append(query.value(1).toString());
-    }
+    QList<QString> allowedClients = SQLDatabaseManager->GetClientsInDatabase();
 
     // Replace the current display with the new client list
     Userslist->clear();
     Userslist->addItems(allowedClients);
 
     // Color in grey all users
-    for(int i = 0; i < Userslist->count(); ++i)
-    {
+    for(int i = 0; i < Userslist->count(); ++i){
         QListWidgetItem* item = Userslist->item(i);
         item->setTextColor(QColor(150, 150, 150, 255));
     }
-
 
     // Color connected users with green
     QList<QString> connectedClients ={};
@@ -204,31 +197,11 @@ void ServerManagement::UpdateClientDisplayUserList() const{
     for (int i=0; i< this->clients.size(); i++){
         connectedClients.append(this->clients[i]->GetClientUserName());
     }
-
     // Replace the current display with the new client list
     GuppySendUserList *Userlistmessage = new GuppySendUserList(connectedClients);
     UserListToBeDelivered(*Userlistmessage);
 }
 
-void ServerManagement::OpenDatabase(QSqlDatabase sqlitedb, QString DatabasePath){
-    sqlitedb = QSqlDatabase::addDatabase("QSQLITE");
-    sqlitedb.setDatabaseName(DatabasePath);
 
-    // If the database already exists, open it
-    if(QFileInfo::exists(DatabasePath)){
-        if(sqlitedb.open()) {
-            ServerLog("Database successfully opened");
-        }else{
-            ServerLog("Database <strong>" + DatabasePath + "</strong> exists but can't be openned... ");
-        }
-    // else create it
-    }else{
-        if(sqlitedb.open()) {
-            ServerLog("Database just created <strong>" + DatabasePath + "</strong>");
-            sqlitedb.exec("CREATE TABLE Clients(ID integer primary key autoincrement  not null , user VARCHAR(25), password VARCHAR(25));");
-        }else{
-            ServerLog("Database can't be created on path <strong>" + DatabasePath + "</strong>");
-        }
-    }
-}
+
 

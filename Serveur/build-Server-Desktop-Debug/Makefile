@@ -54,13 +54,21 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../main.cpp \
 		../Client.cpp \
-		../ServerManagement.cpp moc_Client.cpp \
-		moc_ServerManagement.cpp
+		../DatabaseManager.cpp \
+		../ServerManagement.cpp \
+		../ServerNewUserForm.cpp moc_Client.cpp \
+		moc_DatabaseManager.cpp \
+		moc_ServerManagement.cpp \
+		moc_ServerNewUserForm.cpp
 OBJECTS       = main.o \
 		Client.o \
+		DatabaseManager.o \
 		ServerManagement.o \
+		ServerNewUserForm.o \
 		moc_Client.o \
-		moc_ServerManagement.o
+		moc_DatabaseManager.o \
+		moc_ServerManagement.o \
+		moc_ServerNewUserForm.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -138,9 +146,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../../Serveur.pro ../Client.h \
-		../ServerManagement.h ../main.cpp \
+		../DatabaseManager.h \
+		../ServerManagement.h \
+		../ServerNewUserForm.h ../main.cpp \
 		../Client.cpp \
-		../ServerManagement.cpp
+		../DatabaseManager.cpp \
+		../ServerManagement.cpp \
+		../ServerNewUserForm.cpp
 QMAKE_TARGET  = Serveur
 DESTDIR       = 
 TARGET        = Serveur
@@ -322,8 +334,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Client.h ../ServerManagement.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../main.cpp ../Client.cpp ../ServerManagement.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Client.h ../DatabaseManager.h ../ServerManagement.h ../ServerNewUserForm.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../main.cpp ../Client.cpp ../DatabaseManager.cpp ../ServerManagement.cpp ../ServerNewUserForm.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../ServerManagement.ui $(DISTDIR)/
 
 
@@ -355,9 +367,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	x86_64-linux-gnu-g++ -pipe -g -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_Client.cpp moc_ServerManagement.cpp
+compiler_moc_header_make_all: moc_Client.cpp moc_DatabaseManager.cpp moc_ServerManagement.cpp moc_ServerNewUserForm.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_Client.cpp moc_ServerManagement.cpp
+	-$(DEL_FILE) moc_Client.cpp moc_DatabaseManager.cpp moc_ServerManagement.cpp moc_ServerNewUserForm.cpp
 moc_Client.cpp: ../Client.h \
 		../../GC_common/GuppySendCredentials.h \
 		../../GC_common/IGuppyMessage.h \
@@ -369,6 +381,11 @@ moc_Client.cpp: ../Client.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Serveur/build-Server-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../Client.h -o moc_Client.cpp
 
+moc_DatabaseManager.cpp: ../DatabaseManager.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Serveur/build-Server-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../DatabaseManager.h -o moc_DatabaseManager.cpp
+
 moc_ServerManagement.cpp: ../ServerManagement.h \
 		ui_ServerManagement.h \
 		../Client.h \
@@ -378,9 +395,17 @@ moc_ServerManagement.cpp: ../ServerManagement.h \
 		../../GC_common/GuppyClientServerMessage.h \
 		../../GC_common/GuppyServerClientMessage.h \
 		../../GC_common/GuppySendUserList.h \
+		../ServerNewUserForm.h \
+		../DatabaseManager.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Serveur/build-Server-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../ServerManagement.h -o moc_ServerManagement.cpp
+
+moc_ServerNewUserForm.cpp: ../ServerNewUserForm.h \
+		../DatabaseManager.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jeff/GuppyChat/Serveur/build-Server-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/Serveur -I/home/jeff/GuppyChat/GC_common/build-GC_common-Desktop-Debug -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../ServerNewUserForm.h -o moc_ServerNewUserForm.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -411,7 +436,9 @@ main.o: ../main.cpp ../ServerManagement.h \
 		../../GC_common/GuppyUserValidation.h \
 		../../GC_common/GuppyClientServerMessage.h \
 		../../GC_common/GuppyServerClientMessage.h \
-		../../GC_common/GuppySendUserList.h
+		../../GC_common/GuppySendUserList.h \
+		../ServerNewUserForm.h \
+		../DatabaseManager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
 Client.o: ../Client.cpp ../Client.h \
@@ -423,6 +450,9 @@ Client.o: ../Client.cpp ../Client.h \
 		../../GC_common/GuppySendUserList.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Client.o ../Client.cpp
 
+DatabaseManager.o: ../DatabaseManager.cpp ../DatabaseManager.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DatabaseManager.o ../DatabaseManager.cpp
+
 ServerManagement.o: ../ServerManagement.cpp ../ServerManagement.h \
 		ui_ServerManagement.h \
 		../Client.h \
@@ -431,14 +461,26 @@ ServerManagement.o: ../ServerManagement.cpp ../ServerManagement.h \
 		../../GC_common/GuppyUserValidation.h \
 		../../GC_common/GuppyClientServerMessage.h \
 		../../GC_common/GuppyServerClientMessage.h \
-		../../GC_common/GuppySendUserList.h
+		../../GC_common/GuppySendUserList.h \
+		../ServerNewUserForm.h \
+		../DatabaseManager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ServerManagement.o ../ServerManagement.cpp
+
+ServerNewUserForm.o: ../ServerNewUserForm.cpp ../ServerNewUserForm.h \
+		../DatabaseManager.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ServerNewUserForm.o ../ServerNewUserForm.cpp
 
 moc_Client.o: moc_Client.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Client.o moc_Client.cpp
 
+moc_DatabaseManager.o: moc_DatabaseManager.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_DatabaseManager.o moc_DatabaseManager.cpp
+
 moc_ServerManagement.o: moc_ServerManagement.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ServerManagement.o moc_ServerManagement.cpp
+
+moc_ServerNewUserForm.o: moc_ServerNewUserForm.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ServerNewUserForm.o moc_ServerNewUserForm.cpp
 
 ####### Install
 

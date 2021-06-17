@@ -1,15 +1,19 @@
 TEMPLATE = app
-QT += widgets network sql
+QT += widgets network sql core
 DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
 HEADERS += \
     Client.h \
-    ServerManagement.h
+    DatabaseManager.h \
+    ServerManagement.h \
+    ServerNewUserForm.h
 SOURCES += main.cpp \
     Client.cpp \
-    ServerManagement.cpp
+    DatabaseManager.cpp \
+    ServerManagement.cpp \
+    ServerNewUserForm.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../GC_common/build-GC_common-Desktop-Debug/release/ -lGC_common
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../GC_common/build-GC_common-Desktop-Debug/debug/ -lGC_common

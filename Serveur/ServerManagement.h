@@ -8,6 +8,8 @@
 #include "ui_ServerManagement.h"
 
 #include <Client.h>
+#include "ServerNewUserForm.h"
+#include "DatabaseManager.h"
 
 /*--------------------------------  ServerManagement constructor  ---------------------------------
  *
@@ -34,18 +36,20 @@ private slots:
     void MessageToBeDelivered(const GuppyServerClientMessage& message) const;
     void UserListToBeDelivered(const GuppySendUserList& UserList) const;
 
+    void on_addUser_clicked();
+    void on_removeUser_clicked();
+
 
 private:
     void ServerLog(QString message) const;
     void ServerLog(QString message,QString sender) const;
     void UpdateServerDisplayUserList() const;
     void UpdateClientDisplayUserList() const;
-    void OpenDatabase(QSqlDatabase sqlitedb, QString DatabasePath);
 
 private:
     QList<Client *> clients;
     QTcpServer *server;
-    QSqlDatabase sqlitedb;
+    DatabaseManager *SQLDatabaseManager;
 };
 
 #endif

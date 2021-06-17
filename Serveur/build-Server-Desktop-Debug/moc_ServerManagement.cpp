@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ServerManagement_t {
-    QByteArrayData data[13];
-    char stringdata0[201];
+    QByteArrayData data[15];
+    char stringdata0[242];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -43,7 +43,9 @@ QT_MOC_LITERAL(8, 119, 24), // "GuppyServerClientMessage"
 QT_MOC_LITERAL(9, 144, 7), // "message"
 QT_MOC_LITERAL(10, 152, 21), // "UserListToBeDelivered"
 QT_MOC_LITERAL(11, 174, 17), // "GuppySendUserList"
-QT_MOC_LITERAL(12, 192, 8) // "UserList"
+QT_MOC_LITERAL(12, 192, 8), // "UserList"
+QT_MOC_LITERAL(13, 201, 18), // "on_addUser_clicked"
+QT_MOC_LITERAL(14, 220, 21) // "on_removeUser_clicked"
 
     },
     "ServerManagement\0ClientConnection\0\0"
@@ -51,7 +53,8 @@ QT_MOC_LITERAL(12, 192, 8) // "UserList"
     "ClientIdentificationRequest\0"
     "MessageToBeDelivered\0GuppyServerClientMessage\0"
     "message\0UserListToBeDelivered\0"
-    "GuppySendUserList\0UserList"
+    "GuppySendUserList\0UserList\0"
+    "on_addUser_clicked\0on_removeUser_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -61,7 +64,7 @@ static const uint qt_meta_data_ServerManagement[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -69,11 +72,13 @@ static const uint qt_meta_data_ServerManagement[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   39,    2, 0x08 /* Private */,
-       3,    1,   40,    2, 0x08 /* Private */,
-       6,    1,   43,    2, 0x08 /* Private */,
-       7,    1,   46,    2, 0x08 /* Private */,
-      10,    1,   49,    2, 0x08 /* Private */,
+       1,    0,   49,    2, 0x08 /* Private */,
+       3,    1,   50,    2, 0x08 /* Private */,
+       6,    1,   53,    2, 0x08 /* Private */,
+       7,    1,   56,    2, 0x08 /* Private */,
+      10,    1,   59,    2, 0x08 /* Private */,
+      13,    0,   62,    2, 0x08 /* Private */,
+      14,    0,   63,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -81,6 +86,8 @@ static const uint qt_meta_data_ServerManagement[] = {
     QMetaType::Void, 0x80000000 | 4,    5,
     QMetaType::Void, 0x80000000 | 8,    9,
     QMetaType::Void, 0x80000000 | 11,   12,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -96,6 +103,8 @@ void ServerManagement::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 2: _t->ClientIdentificationRequest((*reinterpret_cast< Client*(*)>(_a[1]))); break;
         case 3: _t->MessageToBeDelivered((*reinterpret_cast< const GuppyServerClientMessage(*)>(_a[1]))); break;
         case 4: _t->UserListToBeDelivered((*reinterpret_cast< const GuppySendUserList(*)>(_a[1]))); break;
+        case 5: _t->on_addUser_clicked(); break;
+        case 6: _t->on_removeUser_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -148,13 +157,13 @@ int ServerManagement::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 7;
     }
     return _id;
 }
